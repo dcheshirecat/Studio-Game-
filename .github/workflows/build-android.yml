@@ -9,9 +9,28 @@ env:
   UNITY_VERSION: 2022.3.20f1
 
 jobs:
+  # ── Activate Unity License ──────────────────────────────────────
+  activate:
+    name: Activate Unity
+    runs-on: ubuntu-latest
+    outputs:
+      license: ${{ steps.activate.outputs.license }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Activate Unity License
+        id: activate
+        uses: game-ci/unity-activate@v2
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
   # ── Build Heal (Therapeutic) variant ─────────────────────────────
   build-heal:
     name: Build Heal APK
+    needs: activate
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -29,7 +48,7 @@ jobs:
           lfs: true
 
       - name: Cache Unity Library (Heal)
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: Library
           key: Library-Android-Heal-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -48,11 +67,6 @@ jobs:
           unityVersion: ${{ env.UNITY_VERSION }}
           androidAppBundle: false
           buildMethod: EndlessBeloved.Editor.BuildScript.BuildHeal
-          androidKeystoreName: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' && 'user.keystore' || '' }}
-          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
           buildName: EndlessBelovedHeal
 
       - name: Upload Heal APK
@@ -65,6 +79,7 @@ jobs:
   # ── Build Dark (Fantasy) variant ────────────────────────────────
   build-dark:
     name: Build Dark APK
+    needs: activate
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -82,7 +97,7 @@ jobs:
           lfs: true
 
       - name: Cache Unity Library (Dark)
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: Library
           key: Library-Android-Dark-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -101,11 +116,6 @@ jobs:
           unityVersion: ${{ env.UNITY_VERSION }}
           androidAppBundle: false
           buildMethod: EndlessBeloved.Editor.BuildScript.BuildDark
-          androidKeystoreName: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' && 'user.keystore' || '' }}
-          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
           buildName: EndlessBelovedDark
 
       - name: Upload Dark APK
@@ -114,34 +124,3 @@ jobs:
           name: EndlessBeloved-Dark-APK
           path: build/Android/*.apk
           retention-days: 14
-
-  # ── Optional: Upload to itch.io ─────────────────────────────────
-  deploy:
-    name: Deploy to itch.io
-    needs: [build-heal, build-dark]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Download Heal APK
-        uses: actions/download-artifact@v4
-        with:
-          name: EndlessBeloved-Heal-APK
-          path: build/heal
-
-      - name: Download Dark APK
-        uses: actions/download-artifact@v4
-        with:
-          name: EndlessBeloved-Dark-APK
-          path: build/dark
-
-      - name: Upload to itch.io
-        if: env.BUTLER_API_KEY != ''
-        run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler push build/heal/*.apk ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:android-heal
-          ./butler push build/dark/*.apk ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:android-dark
-        env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
