@@ -7,39 +7,19 @@ on:
 
 env:
   UNITY_VERSION: 2022.3.20f1
+  UNITY_IMAGE: unityci/editor:ubuntu-2022.3.20f1-android-3
 
 jobs:
-  # ── Activate Unity License ──────────────────────────────────────
-  activate:
-    name: Activate Unity
-    runs-on: ubuntu-latest
-    outputs:
-      license: ${{ steps.activate.outputs.license }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Activate Unity License
-        id: activate
-        uses: game-ci/unity-activate@v2
-        with:
-          unityVersion: ${{ env.UNITY_VERSION }}
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
   # ── Build Heal (Therapeutic) variant ─────────────────────────────
   build-heal:
     name: Build Heal APK
-    needs: activate
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
           sudo apt-get clean
           df -h /
 
@@ -58,18 +38,35 @@ jobs:
             Library-Android-Heal-
             Library-Android-
 
-      - name: Build Heal APK
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: Android
-          unityVersion: ${{ env.UNITY_VERSION }}
-          androidAppBundle: false
-          buildMethod: EndlessBeloved.Editor.BuildScript.BuildHeal
-          buildName: EndlessBelovedHeal
+      - name: Activate and Build Heal APK
+        run: |
+          # Pull the Unity Docker image
+          docker pull $UNITY_IMAGE
+
+          # Run Unity: activate license with email/password, then build
+          docker run --rm \
+            -e UNITY_EMAIL="${{ secrets.UNITY_EMAIL }}" \
+            -e UNITY_PASSWORD="${{ secrets.UNITY_PASSWORD }}" \
+            -v "$PWD:/project" \
+            -w /project \
+            $UNITY_IMAGE \
+            bash -c '
+              set -e
+              echo "=== Activating Unity License ==="
+              unity-editor -batchmode -nographics \
+                -username "$UNITY_EMAIL" \
+                -password "$UNITY_PASSWORD" \
+                -quit \
+                -logFile /dev/stdout || true
+
+              echo "=== Building Heal APK ==="
+              unity-editor -batchmode -nographics \
+                -projectPath /project \
+                -executeMethod EndlessBeloved.Editor.BuildScript.BuildHeal \
+                -buildTarget Android \
+                -logFile /dev/stdout \
+                -quit
+            '
 
       - name: Upload Heal APK
         uses: actions/upload-artifact@v4
@@ -81,14 +78,13 @@ jobs:
   # ── Build Dark (Fantasy) variant ────────────────────────────────
   build-dark:
     name: Build Dark APK
-    needs: activate
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Free disk space
         run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
           sudo apt-get clean
           df -h /
 
@@ -107,18 +103,35 @@ jobs:
             Library-Android-Dark-
             Library-Android-
 
-      - name: Build Dark APK
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: Android
-          unityVersion: ${{ env.UNITY_VERSION }}
-          androidAppBundle: false
-          buildMethod: EndlessBeloved.Editor.BuildScript.BuildDark
-          buildName: EndlessBelovedDark
+      - name: Activate and Build Dark APK
+        run: |
+          # Pull the Unity Docker image
+          docker pull $UNITY_IMAGE
+
+          # Run Unity: activate license with email/password, then build
+          docker run --rm \
+            -e UNITY_EMAIL="${{ secrets.UNITY_EMAIL }}" \
+            -e UNITY_PASSWORD="${{ secrets.UNITY_PASSWORD }}" \
+            -v "$PWD:/project" \
+            -w /project \
+            $UNITY_IMAGE \
+            bash -c '
+              set -e
+              echo "=== Activating Unity License ==="
+              unity-editor -batchmode -nographics \
+                -username "$UNITY_EMAIL" \
+                -password "$UNITY_PASSWORD" \
+                -quit \
+                -logFile /dev/stdout || true
+
+              echo "=== Building Dark APK ==="
+              unity-editor -batchmode -nographics \
+                -projectPath /project \
+                -executeMethod EndlessBeloved.Editor.BuildScript.BuildDark \
+                -buildTarget Android \
+                -logFile /dev/stdout \
+                -quit
+            '
 
       - name: Upload Dark APK
         uses: actions/upload-artifact@v4
