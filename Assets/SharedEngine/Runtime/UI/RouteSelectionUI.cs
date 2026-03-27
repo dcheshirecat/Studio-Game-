@@ -120,7 +120,9 @@ namespace EndlessBeloved.UI
         {
             var gs = GameState.Instance;
             gs.ActiveRoute = characterId;
-            gs.CurrentSceneId = "oracle_ch1_01"; // Default to first story node
+            // Set route-specific starting node based on current chapter
+            int ch = gs.CurrentChapter > 0 ? gs.CurrentChapter : 1;
+            gs.CurrentSceneId = $"{characterId}_ch{ch}_01";
             SaveSystem.Instance?.SaveGame();
             SceneFlowManager.Instance.LoadScene(dialogueScene);
         }

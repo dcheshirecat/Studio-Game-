@@ -164,6 +164,9 @@ namespace EndlessBeloved.Editor
                 new Color(0.3f, 0.3f, 0.3f), Color.white);
             SetAnchors(backSettings, 0.3f, 0.1f, 0.7f, 0.18f);
 
+            // MainMenuUI component
+            canvas.AddComponent<UI.MainMenuUI>();
+
             EditorSceneManager.SaveScene(scene, $"{path}/TitleScreen.unity");
             Debug.Log("Generated: TitleScreen.unity");
         }
@@ -229,6 +232,9 @@ namespace EndlessBeloved.Editor
                 new Color(0.3f, 0.3f, 0.3f), Color.white);
             SetAnchors(backBtn, 0.05f, 0.08f, 0.28f, 0.16f);
 
+            // CharacterSetupUI component
+            canvas.AddComponent<UI.CharacterSetupUI>();
+
             EditorSceneManager.SaveScene(scene, $"{path}/CharacterSetup.unity");
             Debug.Log("Generated: CharacterSetup.unity");
         }
@@ -291,6 +297,9 @@ namespace EndlessBeloved.Editor
             SetAnchors(choicePrefab, 0, 0.7f, 1, 0.95f);
             choicePrefab.SetActive(false);
 
+            // DialogueBoxUI component
+            canvas.AddComponent<UI.DialogueBoxUI>();
+
             EditorSceneManager.SaveScene(scene, $"{path}/DialogueScene.unity");
             Debug.Log("Generated: DialogueScene.unity");
         }
@@ -329,6 +338,9 @@ namespace EndlessBeloved.Editor
                     buttons[i], DarkAccent, Color.white);
                 SetAnchors(btn, 0.15f, startY - i * 0.12f, 0.85f, startY - i * 0.12f + 0.09f);
             }
+
+            // AltarHomeUI component
+            canvas.AddComponent<UI.AltarHomeUI>();
 
             EditorSceneManager.SaveScene(scene, $"{path}/AltarHome.unity");
             Debug.Log("Generated: AltarHome.unity");
@@ -370,6 +382,9 @@ namespace EndlessBeloved.Editor
             var backBtn = CreateButton(canvas.transform, "BackButton", "Back",
                 new Color(0.3f, 0.3f, 0.3f), Color.white);
             SetAnchors(backBtn, 0.3f, 0.02f, 0.7f, 0.08f);
+
+            // RouteSelectionUI component
+            canvas.AddComponent<UI.RouteSelectionUI>();
 
             EditorSceneManager.SaveScene(scene, $"{path}/RouteSelection.unity");
             Debug.Log("Generated: RouteSelection.unity");

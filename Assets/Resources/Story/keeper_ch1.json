@@ -1,0 +1,398 @@
+{
+  "keeper_ch1_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Below the sanctuary, there is a library. Not a room with books -- a world built of them. Shelves that curve like ribs, holding volumes in languages you've never seen.",
+    "background": "sanctuary_entrance",
+    "music": "keeper_heal_theme",
+    "next": "keeper_ch1_02"
+  },
+  "keeper_ch1_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "The air tastes like old ink and lavender. Somewhere deep inside, a clock ticks -- slow, patient, keeping time with something that isn't hours.",
+    "next": "keeper_ch1_03"
+  },
+  "keeper_ch1_03": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Between the shelves, someone moves. Quick, careful hands shelving books that seem to rearrange themselves when you look away.",
+    "next": "keeper_ch1_04"
+  },
+  "keeper_ch1_04": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "Oh! A visitor. I heard there was someone new. Hold on -- don't touch that shelf, it's in a mood today.",
+    "next": "keeper_ch1_05"
+  },
+  "keeper_ch1_05": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "They emerge from between the stacks. Small, quick-eyed, with ink-stained fingers and a smile that's warm but distracted -- like they're always halfway inside a thought.",
+    "next": "keeper_ch1_06"
+  },
+  "keeper_ch1_06": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "I'm the Keeper. Of stories, mostly. But also of... well, everything people forget. Or choose to forget. Or need someone to remember for them.",
+    "next": "keeper_ch1_choice_01"
+  },
+  "keeper_ch1_choice_01": {
+    "type": "choice",
+    "text": "How do you respond?",
+    "choices": [
+      {
+        "text": "What kind of stories?",
+        "next": "keeper_ch1_stories_01",
+        "affinity": { "keeper": 4 }
+      },
+      {
+        "text": "People forget things here?",
+        "next": "keeper_ch1_forget_01",
+        "affinity": { "keeper": 3 }
+      },
+      {
+        "text": "Do you have my story?",
+        "next": "keeper_ch1_mine_01",
+        "affinity": { "keeper": 6 },
+        "effects": [
+          { "type": "set_flag", "target": "asked_about_own_story", "value": "true" }
+        ]
+      },
+      {
+        "text": "That sounds lonely.",
+        "next": "keeper_ch1_lonely_01",
+        "affinity": { "keeper": 5 },
+        "effects": [
+          { "type": "set_flag", "target": "recognized_keeper_loneliness", "value": "true" }
+        ]
+      }
+    ]
+  },
+  "keeper_ch1_stories_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "All kinds! Beginnings, endings, the mushy middles where nothing seems to happen but everything changes. Those are my favorites, actually -- the middles.",
+    "next": "keeper_ch1_stories_02"
+  },
+  "keeper_ch1_stories_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "thoughtful",
+    "text": "Everyone wants the dramatic moments. The breakthroughs. But healing? Healing happens in the quiet parts, when you're not looking.",
+    "next": "keeper_ch1_converge_01"
+  },
+  "keeper_ch1_forget_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "sad",
+    "text": "Sometimes. Not on purpose. But the mind is a funny thing -- it protects you by hiding things. The problem is, it doesn't always hide the right things.",
+    "next": "keeper_ch1_forget_02"
+  },
+  "keeper_ch1_forget_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "So I keep them. In the books, in the shelves. Safe. Until someone's ready to look at them again.",
+    "next": "keeper_ch1_converge_01"
+  },
+  "keeper_ch1_mine_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "surprised",
+    "text": "{keeper} stops mid-step. Looks at you with eyes that are suddenly very old, very deep.",
+    "next": "keeper_ch1_mine_02"
+  },
+  "keeper_ch1_mine_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "thoughtful",
+    "text": "I have... pieces. Fragments. Like a book someone started writing but kept putting down. There are chapters missing. Whole sections that are just blank pages.",
+    "next": "keeper_ch1_mine_03"
+  },
+  "keeper_ch1_mine_03": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "loving",
+    "text": "But the book isn't finished, {name}. That's the important thing. The pen is still in your hand.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_narrative_therapy", "value": "true" }
+    ],
+    "next": "keeper_ch1_skill_01"
+  },
+  "keeper_ch1_skill_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Narrative Reframing]\nYou are both the author and the character of your own story. The events that happened to you are facts, but the meaning you give them is yours to shape. Asking 'What story am I telling myself about this?' can reveal narratives that no longer serve you -- and open space for new ones.",
+    "sfx": "skill_unlock",
+    "next": "keeper_ch1_converge_01"
+  },
+  "keeper_ch1_lonely_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "surprised",
+    "text": "{keeper} blinks. Sets down the book they were holding. Sits on a nearby stack of encyclopedias.",
+    "next": "keeper_ch1_lonely_02"
+  },
+  "keeper_ch1_lonely_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "sad",
+    "text": "It is. It really is. Everyone comes here to find something, and I help them find it, and then they leave. And I stay, with all the stories that aren't mine.",
+    "next": "keeper_ch1_lonely_03"
+  },
+  "keeper_ch1_lonely_03": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "I don't usually say that out loud. You have a way of making people honest, {name}. That's either a gift or a very inconvenient superpower.",
+    "next": "keeper_ch1_converge_01"
+  },
+
+  "keeper_ch1_converge_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "Come, let me show you something. There's a section of the library I think you'll like.",
+    "next": "keeper_ch1_converge_02"
+  },
+  "keeper_ch1_converge_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "{keeper} leads you deeper in. The shelves narrow, then open into a small clearing. In the center: a round table, a single candle, and a book with no title on the cover.",
+    "next": "keeper_ch1_converge_03"
+  },
+  "keeper_ch1_converge_03": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "thoughtful",
+    "text": "This is the Memory Table. You put your hand on the book, and it shows you something. Not the future -- a memory. One that matters. One you need to see again.",
+    "next": "keeper_ch1_converge_04"
+  },
+  "keeper_ch1_converge_04": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "You don't have to. But if you want... I'll be right here. Whatever comes up, you won't face it alone.",
+    "next": "keeper_ch1_choice_02"
+  },
+  "keeper_ch1_choice_02": {
+    "type": "choice",
+    "choices": [
+      {
+        "text": "Touch the book.",
+        "next": "keeper_ch1_memory_01",
+        "affinity": { "keeper": 5 }
+      },
+      {
+        "text": "Not yet. I'm not ready.",
+        "next": "keeper_ch1_wait_01",
+        "affinity": { "keeper": 4 },
+        "effects": [
+          { "type": "set_flag", "target": "chose_not_to_remember", "value": "true" }
+        ]
+      },
+      {
+        "text": "Have you ever used it? On yourself?",
+        "next": "keeper_ch1_keeper_memory_01",
+        "affinity": { "keeper": 6 }
+      }
+    ]
+  },
+  "keeper_ch1_memory_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "You touch the book. The leather is warm, like it's been sitting in sunlight. The candle flickers.",
+    "next": "keeper_ch1_memory_02"
+  },
+  "keeper_ch1_memory_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "A flash. Not a vision -- a feeling. The sensation of being small, and safe, and held. A voice humming something you can't name but your body remembers.",
+    "sfx": "card_draw",
+    "next": "keeper_ch1_memory_03"
+  },
+  "keeper_ch1_memory_03": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "It lasts only a moment. When it fades, there are tears on your face. Not sad tears. The other kind -- the kind that come when something true breaks through.",
+    "next": "keeper_ch1_memory_04"
+  },
+  "keeper_ch1_memory_04": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "loving",
+    "text": "{keeper} says nothing. They just offer you a handkerchief -- old, embroidered with tiny stars. They wait.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_emotional_release", "value": "true" }
+    ],
+    "next": "keeper_ch1_skill_02"
+  },
+  "keeper_ch1_skill_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Allowing Emotional Release]\nCrying is not weakness. It's your nervous system doing exactly what it's designed to do: release tension. Tears contain stress hormones that your body is literally flushing out. Next time you feel tears coming, try letting them happen instead of holding back. Set a timer for 5 minutes if you need -- give yourself permission.",
+    "sfx": "skill_unlock",
+    "next": "keeper_ch1_evening_01"
+  },
+  "keeper_ch1_wait_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "Good. That's good, actually. Knowing you're not ready is its own kind of wisdom. Most people dive in before they've learned to swim.",
+    "next": "keeper_ch1_wait_02"
+  },
+  "keeper_ch1_wait_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "The book will be here. It doesn't go anywhere. Neither do I.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_pacing", "value": "true" }
+    ],
+    "next": "keeper_ch1_skill_03"
+  },
+  "keeper_ch1_skill_03": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Therapeutic Pacing]\nHealing isn't a race. Going too fast can re-traumatize rather than heal. 'Not yet' is a complete answer. Trust your own timing -- your mind knows when it's safe enough to process difficult material. Pushing through isn't always brave; sometimes holding back is the braver choice.",
+    "sfx": "skill_unlock",
+    "next": "keeper_ch1_evening_01"
+  },
+  "keeper_ch1_keeper_memory_01": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "fearful",
+    "text": "{keeper} goes very still. Their hand drifts to the edge of the book but doesn't touch it.",
+    "next": "keeper_ch1_keeper_memory_02"
+  },
+  "keeper_ch1_keeper_memory_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "sad",
+    "text": "Once. Just once. I saw... I saw the moment I became the Keeper. The moment I lost the person I was before.",
+    "next": "keeper_ch1_keeper_memory_03"
+  },
+  "keeper_ch1_keeper_memory_03": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "I don't regret it. But I grieve it. You can do both, it turns out. Grieve something and be grateful for it at the same time.",
+    "next": "keeper_ch1_evening_01"
+  },
+
+  "keeper_ch1_evening_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Time moves differently in the library. When you finally look up, the candles have burned low and the shadows have grown long.",
+    "background": "sanctuary_evening",
+    "music": "evening_gentle",
+    "next": "keeper_ch1_evening_02"
+  },
+  "keeper_ch1_evening_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "Come back tomorrow. I'll have tea. Real tea, not the experimental stuff the Oracle brews -- last time I'm fairly sure there was a mushroom in it that changed colors.",
+    "next": "keeper_ch1_evening_03"
+  },
+  "keeper_ch1_evening_03": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "neutral",
+    "text": "And {name}? Thank you for coming down here. Most people don't bother with the library.",
+    "next": "keeper_ch1_final_choice"
+  },
+  "keeper_ch1_final_choice": {
+    "type": "choice",
+    "choices": [
+      {
+        "text": "It's the best room in this place.",
+        "next": "keeper_ch1_end_best",
+        "affinity": { "keeper": 5 }
+      },
+      {
+        "text": "I think we're going to be good friends.",
+        "next": "keeper_ch1_end_friends",
+        "affinity": { "keeper": 4 }
+      },
+      {
+        "text": "I'd like to help you. With the books, with the stories. If you'll let me.",
+        "next": "keeper_ch1_end_help",
+        "affinity": { "keeper": 8 },
+        "required_affinity_char": "keeper",
+        "required_affinity": 5
+      }
+    ]
+  },
+  "keeper_ch1_end_best": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "{keeper} beams. It transforms their whole face -- all the worry lines vanish and what's left is pure, uncomplicated delight.",
+    "next": "keeper_ch1_end_best_02"
+  },
+  "keeper_ch1_end_best_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "loving",
+    "text": "I knew I liked you.",
+    "next": "keeper_ch1_end_shared"
+  },
+  "keeper_ch1_end_friends": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "surprised",
+    "text": "{keeper} laughs. Not a polite laugh -- a real one, unexpected and slightly too loud for a library.",
+    "next": "keeper_ch1_end_friends_02"
+  },
+  "keeper_ch1_end_friends_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "happy",
+    "text": "Friends. Yes. I'd like that. I'd like that very much. The books are wonderful company, but they never laugh at my jokes.",
+    "next": "keeper_ch1_end_shared"
+  },
+  "keeper_ch1_end_help": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "surprised",
+    "text": "{keeper} stares at you. Opens their mouth. Closes it. A book falls off a nearby shelf -- even the library seems surprised.",
+    "next": "keeper_ch1_end_help_02"
+  },
+  "keeper_ch1_end_help_02": {
+    "type": "line",
+    "speaker": "keeper",
+    "portrait": "loving",
+    "text": "Nobody's ever asked me that before. I -- yes. Yes, I'd like that. There's so much to do, and I've been doing it alone for so long, I forgot that was a choice and not a sentence.",
+    "effects": [
+      { "type": "set_flag", "target": "offered_to_help_keeper", "value": "true" }
+    ],
+    "next": "keeper_ch1_end_shared"
+  },
+
+  "keeper_ch1_end_shared": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "You leave the library carrying the smell of old books and lavender. The stairs lead you back to the main sanctuary, where a fire is burning and the evening has settled in like a cat in a sunbeam.",
+    "background": "sanctuary_night",
+    "next": "keeper_ch1_end_final"
+  },
+  "keeper_ch1_end_final": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "In your pocket, the deck shifts. A card slides to the edge, as if trying to show itself. You tuck it back in gently. Tomorrow. There's time.",
+    "sfx": "card_shuffle",
+    "effects": [
+      { "type": "set_flag", "target": "keeper_ch1_complete", "value": "true" }
+    ],
+    "next": "keeper_ch1_end"
+  },
+  "keeper_ch1_end": {
+    "type": "end",
+    "next_scene": "AltarHome"
+  }
+}

@@ -60,15 +60,25 @@ namespace EndlessBeloved.UI
             var gs = GameState.Instance;
             string route = gs.ActiveRoute;
             if (string.IsNullOrEmpty(route)) route = "oracle";
+            int chapter = gs.CurrentChapter > 0 ? gs.CurrentChapter : 1;
 
-            // Try to load chapter JSON from Resources
-            string path = $"Story/{route}_ch{gs.CurrentChapter}";
-            var jsonAsset = Resources.Load<TextAsset>(path);
-
-            // Fallback: try from project content
-            if (jsonAsset == null)
+            // Try to load chapter JSON from Resources/Story/
+            string[] pathsToTry = new[]
             {
-                jsonAsset = Resources.Load<TextAsset>($"oracle_ch1");
+                $"Story/{route}_ch{chapter}",
+                $"Story/{route}_ch1",
+                $"Story/oracle_ch1"
+            };
+
+            TextAsset jsonAsset = null;
+            foreach (string path in pathsToTry)
+            {
+                jsonAsset = Resources.Load<TextAsset>(path);
+                if (jsonAsset != null)
+                {
+                    Debug.Log($"DialogueBoxUI: Loaded story from {path}");
+                    break;
+                }
             }
 
             if (jsonAsset != null)
@@ -77,13 +87,7 @@ namespace EndlessBeloved.UI
             }
             else
             {
-                // Last resort: load from StreamingAssets or direct path
-                string directPath = $"Assets/_Project/Content/Story/Oracle/oracle_ch1";
-                jsonAsset = Resources.Load<TextAsset>(directPath);
-                if (jsonAsset != null)
-                    runner.LoadChapter(jsonAsset, gs.CurrentSceneId);
-                else
-                    Debug.LogError($"Could not load chapter JSON for route={route} chapter={gs.CurrentChapter}");
+                Debug.LogError($"Could not load chapter JSON for route={route} chapter={chapter}. Checked: {string.Join(", ", pathsToTry)}");
             }
         }
 
