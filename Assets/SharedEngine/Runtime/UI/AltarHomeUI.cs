@@ -5,49 +5,45 @@ using EndlessBeloved.Core;
 namespace EndlessBeloved.UI
 {
     /// <summary>
-    /// Altar home screen: the hub between story chapters.
-    /// Player can access routes, daily reading, altar, spells, journal.
+    /// Altar home screen hub. Auto-wires by name.
     /// </summary>
-    public class AltarHomeUI : MonoBehaviour
+    public class AltarHomeUI : AutoWireUI
     {
-        [Header("Navigation Buttons")]
-        [SerializeField] private Button routeSelectionButton;
-        [SerializeField] private Button dailyReadingButton;
-        [SerializeField] private Button altarButton;
-        [SerializeField] private Button spellsButton;
-        [SerializeField] private Button journalButton;
-        [SerializeField] private Button settingsButton;
-        [SerializeField] private Button saveButton;
-
-        [Header("Status Display")]
-        [SerializeField] private Text playerNameText;
-        [SerializeField] private Text chapterText;
-        [SerializeField] private Text cycleText;
-
-        [Header("Sub-panels")]
-        [SerializeField] private CardDrawUI cardDrawUI;
-        [SerializeField] private JournalUI journalUI;
-
-        [Header("Scenes")]
-        [SerializeField] private string routeSelectionScene = "RouteSelection";
-        [SerializeField] private string spellCastingScene = "SpellCasting";
-        [SerializeField] private string settingsScene = "TitleScreen";
+        private Button routeSelectionButton;
+        private Button dailyReadingButton;
+        private Button spellsButton;
+        private Button journalButton;
+        private Button saveButton;
+        private Text playerNameText;
+        private Text chapterText;
+        private Text cycleText;
 
         private void Start()
         {
+            routeSelectionButton = FindBtn("RoutesButton");
+            dailyReadingButton = FindBtn("DailyReadingButton");
+            spellsButton = FindBtn("SpellsButton");
+            journalButton = FindBtn("JournalButton");
+            saveButton = FindBtn("SaveButton");
+            playerNameText = FindTxt("PlayerNameText");
+            chapterText = FindTxt("ChapterText");
+            cycleText = FindTxt("CycleText");
+
             RefreshDisplay();
 
             routeSelectionButton?.onClick.AddListener(() =>
-                SceneFlowManager.Instance.LoadScene(routeSelectionScene));
-
+                SceneFlowManager.Instance.LoadScene("RouteSelection"));
             dailyReadingButton?.onClick.AddListener(OnDailyReading);
-            journalButton?.onClick.AddListener(() => journalUI?.Open());
+            journalButton?.onClick.AddListener(() =>
+            {
+                var journal = FindObjectOfType<JournalUI>();
+                if (journal != null) journal.Open();
+            });
             saveButton?.onClick.AddListener(OnSave);
-
             spellsButton?.onClick.AddListener(() =>
-                SceneFlowManager.Instance.LoadScene(spellCastingScene));
+                Debug.Log("Spell casting coming in Phase 2"));
 
-            // Check if daily reading is available (once per real-world day)
+            // Check daily reading availability
             string lastReading = PlayerPrefs.GetString("last_daily_reading", "");
             string today = System.DateTime.Now.ToString("yyyy-MM-dd");
             if (dailyReadingButton != null)
@@ -66,24 +62,17 @@ namespace EndlessBeloved.UI
 
         private void OnDailyReading()
         {
-            if (cardDrawUI != null)
-            {
-                cardDrawUI.gameObject.SetActive(true);
-                cardDrawUI.OpenForDailyReading();
-
-                // Record that we did today's reading
-                PlayerPrefs.SetString("last_daily_reading",
-                    System.DateTime.Now.ToString("yyyy-MM-dd"));
-                PlayerPrefs.Save();
-
-                if (dailyReadingButton != null)
-                    dailyReadingButton.interactable = false;
-            }
+            Debug.Log("Daily reading coming in Phase 2");
+            PlayerPrefs.SetString("last_daily_reading",
+                System.DateTime.Now.ToString("yyyy-MM-dd"));
+            PlayerPrefs.Save();
+            if (dailyReadingButton != null)
+                dailyReadingButton.interactable = false;
         }
 
         private void OnSave()
         {
-            SaveSystem.Instance.SaveGame();
+            SaveSystem.Instance?.SaveGame();
             AudioManager.Instance?.PlaySFX("save_confirm");
         }
     }

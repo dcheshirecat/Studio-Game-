@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EndlessBeloved.Core;
@@ -6,64 +5,69 @@ using EndlessBeloved.Core;
 namespace EndlessBeloved.UI
 {
     /// <summary>
-    /// Title screen / main menu. Handles new game, continue, settings.
+    /// Title screen / main menu. Auto-wires all UI references by name.
     /// </summary>
-    public class MainMenuUI : MonoBehaviour
+    public class MainMenuUI : AutoWireUI
     {
-        [Header("Panels")]
-        [SerializeField] private GameObject mainPanel;
-        [SerializeField] private GameObject saveSlotPanel;
-        [SerializeField] private GameObject settingsPanel;
+        private GameObject mainPanel;
+        private GameObject saveSlotPanel;
+        private GameObject settingsPanel;
+        private Button newGameButton;
+        private Button continueButton;
+        private Button settingsButton;
+        private Button backFromSlotsButton;
+        private Button backFromSettingsButton;
+        private Slider musicVolumeSlider;
+        private Slider sfxVolumeSlider;
+        private Text[] slotLabels = new Text[3];
+        private Button[] slotButtons = new Button[3];
 
-        [Header("Main Buttons")]
-        [SerializeField] private Button newGameButton;
-        [SerializeField] private Button continueButton;
-        [SerializeField] private Button settingsButton;
-
-        [Header("Save Slots")]
-        [SerializeField] private List<Button> slotButtons = new List<Button>();
-        [SerializeField] private List<Text> slotLabels = new List<Text>();
-        [SerializeField] private Button backFromSlotsButton;
-
-        [Header("Settings")]
-        [SerializeField] private Slider musicVolumeSlider;
-        [SerializeField] private Slider sfxVolumeSlider;
-        [SerializeField] private Slider textSpeedSlider;
-        [SerializeField] private Button backFromSettingsButton;
-
-        [Header("Scenes")]
-        [SerializeField] private string characterSetupScene = "CharacterSetup";
-        [SerializeField] private string altarHomeScene = "AltarHome";
-
+        private string characterSetupScene = "CharacterSetup";
+        private string altarHomeScene = "AltarHome";
         private bool isLoadMode = false;
 
         private void Start()
         {
-            mainPanel.SetActive(true);
-            saveSlotPanel.SetActive(false);
-            settingsPanel.SetActive(false);
+            // Auto-wire
+            mainPanel = Find("MainPanel");
+            saveSlotPanel = Find("SaveSlotPanel");
+            settingsPanel = Find("SettingsPanel");
+            newGameButton = FindBtn("NewGameButton");
+            continueButton = FindBtn("ContinueButton");
+            settingsButton = FindBtn("SettingsButton");
+            backFromSlotsButton = FindBtn("BackButton");
+            backFromSettingsButton = FindBtn("BackFromSettings");
+            musicVolumeSlider = FindSlider("MusicSlider");
+            sfxVolumeSlider = FindSlider("SFXSlider");
 
-            // Check if any saves exist
+            for (int i = 0; i < 3; i++)
+            {
+                slotButtons[i] = FindBtn($"Slot{i}Button");
+                slotLabels[i] = FindTxt($"Slot{i}Button");
+            }
+
+            // Setup
+            if (mainPanel != null) mainPanel.SetActive(true);
+            if (saveSlotPanel != null) saveSlotPanel.SetActive(false);
+            if (settingsPanel != null) settingsPanel.SetActive(false);
+
             bool hasSaves = false;
             for (int i = 0; i < GameState.MaxSlots; i++)
-            {
-                if (SaveSystem.Instance.SlotExists(i)) { hasSaves = true; break; }
-            }
-            continueButton.interactable = hasSaves;
+                if (SaveSystem.Instance != null && SaveSystem.Instance.SlotExists(i)) { hasSaves = true; break; }
+            if (continueButton != null) continueButton.interactable = hasSaves;
 
-            newGameButton.onClick.AddListener(OnNewGame);
-            continueButton.onClick.AddListener(OnContinue);
-            settingsButton.onClick.AddListener(OnSettings);
+            newGameButton?.onClick.AddListener(OnNewGame);
+            continueButton?.onClick.AddListener(OnContinue);
+            settingsButton?.onClick.AddListener(OnSettings);
             backFromSlotsButton?.onClick.AddListener(ShowMain);
             backFromSettingsButton?.onClick.AddListener(ShowMain);
 
-            for (int i = 0; i < slotButtons.Count; i++)
+            for (int i = 0; i < slotButtons.Length; i++)
             {
                 int slot = i;
-                slotButtons[i].onClick.AddListener(() => OnSlotSelected(slot));
+                slotButtons[i]?.onClick.AddListener(() => OnSlotSelected(slot));
             }
 
-            // Load saved settings
             if (musicVolumeSlider != null)
             {
                 musicVolumeSlider.value = PlayerPrefs.GetFloat("music_volume", 0.7f);
@@ -82,68 +86,48 @@ namespace EndlessBeloved.UI
                     PlayerPrefs.SetFloat("sfx_volume", v);
                 });
             }
-            if (textSpeedSlider != null)
-            {
-                textSpeedSlider.value = PlayerPrefs.GetFloat("text_speed", 30f);
-                textSpeedSlider.onValueChanged.AddListener(v =>
-                {
-                    PlayerPrefs.SetFloat("text_speed", v);
-                });
-            }
+
+            AudioManager.Instance?.PlayMusic("title_theme");
         }
 
-        private void OnNewGame()
-        {
-            isLoadMode = false;
-            ShowSlotPanel();
-        }
-
-        private void OnContinue()
-        {
-            isLoadMode = true;
-            ShowSlotPanel();
-        }
+        private void OnNewGame() { isLoadMode = false; ShowSlotPanel(); }
+        private void OnContinue() { isLoadMode = true; ShowSlotPanel(); }
 
         private void OnSettings()
         {
-            mainPanel.SetActive(false);
-            settingsPanel.SetActive(true);
+            if (mainPanel != null) mainPanel.SetActive(false);
+            if (settingsPanel != null) settingsPanel.SetActive(true);
         }
 
         private void ShowMain()
         {
-            mainPanel.SetActive(true);
-            saveSlotPanel.SetActive(false);
-            settingsPanel.SetActive(false);
+            if (mainPanel != null) mainPanel.SetActive(true);
+            if (saveSlotPanel != null) saveSlotPanel.SetActive(false);
+            if (settingsPanel != null) settingsPanel.SetActive(false);
         }
 
         private void ShowSlotPanel()
         {
-            mainPanel.SetActive(false);
-            saveSlotPanel.SetActive(true);
+            if (mainPanel != null) mainPanel.SetActive(false);
+            if (saveSlotPanel != null) saveSlotPanel.SetActive(true);
 
-            for (int i = 0; i < slotButtons.Count && i < GameState.MaxSlots; i++)
+            for (int i = 0; i < 3; i++)
             {
-                var data = SaveSystem.Instance.PeekSlot(i);
-                if (data != null)
+                var data = SaveSystem.Instance?.PeekSlot(i);
+                if (slotLabels[i] != null)
                 {
-                    slotLabels[i].text = $"Slot {i + 1}: {data.PlayerName}\n" +
-                        $"Chapter {data.CurrentChapter} | Cycle {data.CycleNumber}\n" +
-                        $"{data.SaveTimestamp}";
-                    slotButtons[i].interactable = true;
+                    slotLabels[i].text = data != null
+                        ? $"Slot {i + 1}: {data.PlayerName}\nChapter {data.CurrentChapter} | Cycle {data.CycleNumber}"
+                        : $"Slot {i + 1}: Empty";
                 }
-                else
-                {
-                    slotLabels[i].text = $"Slot {i + 1}: Empty";
-                    slotButtons[i].interactable = !isLoadMode; // Can't load empty slot
-                }
+                if (slotButtons[i] != null)
+                    slotButtons[i].interactable = !isLoadMode || data != null;
             }
         }
 
         private void OnSlotSelected(int slot)
         {
             GameState.Instance.CurrentSlot = slot;
-
             if (isLoadMode)
             {
                 SaveSystem.Instance.LoadGame(slot);

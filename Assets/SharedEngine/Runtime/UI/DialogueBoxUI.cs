@@ -2,46 +2,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EndlessBeloved.Dialogue;
-using EndlessBeloved.Characters;
+using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
 {
     /// <summary>
-    /// Visual dialogue box: shows speaker name, text, portrait, and choices.
-    /// Listens to DialogueRunner events and renders them.
+    /// Dialogue display UI. Auto-wires by name. Also loads chapter JSON automatically.
     /// </summary>
-    public class DialogueBoxUI : MonoBehaviour
+    public class DialogueBoxUI : AutoWireUI
     {
-        [Header("Dialogue Display")]
-        [SerializeField] private Text speakerNameText;
-        [SerializeField] private Text dialogueText;
-        [SerializeField] private Image portraitImage;
-        [SerializeField] private Image backgroundImage;
-        [SerializeField] private GameObject dialoguePanel;
-        [SerializeField] private GameObject tapIndicator; // "tap to continue" icon
-
-        [Header("Choice Display")]
-        [SerializeField] private GameObject choicePanel;
-        [SerializeField] private Transform choiceButtonParent;
-        [SerializeField] private GameObject choiceButtonPrefab;
-
-        [Header("Data")]
-        [SerializeField] private CharacterDatabase characterDatabase;
-
-        [Header("Theme")]
-        [SerializeField] private Color narratorNameColor = new Color(0.8f, 0.8f, 0.8f);
-        [SerializeField] private Color characterNameColor = new Color(1f, 0.84f, 0f); // gold
+        private Text speakerNameText;
+        private Text dialogueText;
+        private Image portraitImage;
+        private Image backgroundImage;
+        private GameObject dialoguePanel;
+        private GameObject tapIndicator;
+        private GameObject choicePanel;
+        private GameObject choiceButtonPrefab;
 
         private DialogueRunner runner;
         private List<GameObject> spawnedChoiceButtons = new List<GameObject>();
 
         private void Start()
         {
-            runner = DialogueRunner.Instance;
+            // Auto-wire
+            speakerNameText = FindTxt("SpeakerNameText");
+            dialogueText = FindTxt("DialogueText");
+            portraitImage = FindImg("PortraitImage");
+            backgroundImage = FindImg("BackgroundImage");
+            dialoguePanel = Find("DialoguePanel");
+            tapIndicator = Find("TapIndicator");
+            choicePanel = Find("ChoicePanel");
+            choiceButtonPrefab = Find("ChoiceButtonPrefab");
+
+            // Setup runner
+            runner = FindObjectOfType<DialogueRunner>();
             if (runner == null)
             {
-                Debug.LogError("DialogueBoxUI: No DialogueRunner found");
-                return;
+                var go = new GameObject("DialogueRunner");
+                runner = go.AddComponent<DialogueRunner>();
             }
 
             runner.OnDialogueLine += HandleDialogueLine;
@@ -49,11 +48,43 @@ namespace EndlessBeloved.UI
             runner.OnBackgroundChanged += HandleBackground;
             runner.OnChapterEnded += HandleChapterEnd;
 
-            choicePanel.SetActive(false);
+            if (choicePanel != null) choicePanel.SetActive(false);
             if (tapIndicator != null) tapIndicator.SetActive(false);
 
-            if (characterDatabase != null)
-                characterDatabase.Initialize();
+            // Auto-load chapter based on game state
+            LoadCurrentChapter();
+        }
+
+        private void LoadCurrentChapter()
+        {
+            var gs = GameState.Instance;
+            string route = gs.ActiveRoute;
+            if (string.IsNullOrEmpty(route)) route = "oracle";
+
+            // Try to load chapter JSON from Resources
+            string path = $"Story/{route}_ch{gs.CurrentChapter}";
+            var jsonAsset = Resources.Load<TextAsset>(path);
+
+            // Fallback: try from project content
+            if (jsonAsset == null)
+            {
+                jsonAsset = Resources.Load<TextAsset>($"oracle_ch1");
+            }
+
+            if (jsonAsset != null)
+            {
+                runner.LoadChapter(jsonAsset, gs.CurrentSceneId);
+            }
+            else
+            {
+                // Last resort: load from StreamingAssets or direct path
+                string directPath = $"Assets/_Project/Content/Story/Oracle/oracle_ch1";
+                jsonAsset = Resources.Load<TextAsset>(directPath);
+                if (jsonAsset != null)
+                    runner.LoadChapter(jsonAsset, gs.CurrentSceneId);
+                else
+                    Debug.LogError($"Could not load chapter JSON for route={route} chapter={gs.CurrentChapter}");
+            }
         }
 
         private void OnDestroy()
@@ -69,95 +100,98 @@ namespace EndlessBeloved.UI
 
         private void Update()
         {
-            // Tap anywhere to advance (except when choices are showing)
+            if (runner == null) return;
+
+            // Tap to advance
             if (Input.GetMouseButtonDown(0) && !runner.IsWaitingForChoice)
             {
-                // Check we're not tapping a UI button
-                if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                if (UnityEngine.EventSystems.EventSystem.current == null ||
+                    !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                     runner.OnPlayerTap();
             }
 
-            // Show/hide tap indicator
             if (tapIndicator != null)
                 tapIndicator.SetActive(!runner.IsTyping && !runner.IsWaitingForChoice);
         }
 
         private void HandleDialogueLine(string speaker, string text, string portrait)
         {
-            dialoguePanel.SetActive(true);
-            choicePanel.SetActive(false);
+            if (dialoguePanel != null) dialoguePanel.SetActive(true);
+            if (choicePanel != null) choicePanel.SetActive(false);
 
-            // Speaker name
-            if (speaker == "narrator")
+            if (speakerNameText != null)
             {
-                speakerNameText.text = "";
-                speakerNameText.gameObject.SetActive(false);
-            }
-            else
-            {
-                string displayName = speaker;
-                if (characterDatabase != null)
+                if (speaker == "narrator")
                 {
-                    var gs = Core.GameState.Instance;
-                    string variant = gs.CharacterVariants.ContainsKey(speaker) ? gs.CharacterVariants[speaker] : "";
-                    string charName = characterDatabase.GetCharacterName(speaker, variant);
-                    if (!string.IsNullOrEmpty(charName))
-                        displayName = charName;
-                }
-                speakerNameText.text = displayName;
-                speakerNameText.color = characterNameColor;
-                speakerNameText.gameObject.SetActive(true);
-            }
-
-            // Dialogue text
-            dialogueText.text = text;
-
-            // Portrait
-            if (portraitImage != null)
-            {
-                if (speaker != "narrator" && characterDatabase != null)
-                {
-                    var gs = Core.GameState.Instance;
-                    string variant = gs.CharacterVariants.ContainsKey(speaker) ? gs.CharacterVariants[speaker] : "";
-                    Sprite portraitSprite = characterDatabase.GetPortrait(speaker, portrait ?? "neutral", variant);
-                    if (portraitSprite != null)
-                    {
-                        portraitImage.sprite = portraitSprite;
-                        portraitImage.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        portraitImage.gameObject.SetActive(false);
-                    }
+                    speakerNameText.text = "";
+                    speakerNameText.gameObject.SetActive(false);
                 }
                 else
                 {
-                    portraitImage.gameObject.SetActive(false);
+                    var gs = GameState.Instance;
+                    string variant = gs.CharacterVariants.ContainsKey(speaker)
+                        ? gs.CharacterVariants[speaker] : "";
+                    speakerNameText.text = speaker.ToUpper();
+                    speakerNameText.color = new Color(1f, 0.84f, 0f);
+                    speakerNameText.gameObject.SetActive(true);
                 }
             }
+
+            if (dialogueText != null)
+                dialogueText.text = text;
+
+            if (portraitImage != null)
+                portraitImage.gameObject.SetActive(speaker != "narrator");
         }
 
         private void HandleChoices(List<DialogueChoice> choices)
         {
-            choicePanel.SetActive(true);
+            if (choicePanel != null) choicePanel.SetActive(true);
 
-            // Clear old buttons
-            foreach (var btn in spawnedChoiceButtons)
-                Destroy(btn);
+            foreach (var btn in spawnedChoiceButtons) Destroy(btn);
             spawnedChoiceButtons.Clear();
 
-            // Spawn choice buttons
             for (int i = 0; i < choices.Count; i++)
             {
                 int index = i;
-                var go = Instantiate(choiceButtonPrefab, choiceButtonParent);
-                go.SetActive(true);
+                GameObject go;
+
+                if (choiceButtonPrefab != null)
+                {
+                    go = Instantiate(choiceButtonPrefab, choicePanel.transform);
+                    go.SetActive(true);
+                }
+                else
+                {
+                    go = new GameObject($"Choice_{i}");
+                    go.transform.SetParent(choicePanel.transform, false);
+                    var rect = go.AddComponent<RectTransform>();
+                    rect.anchorMin = new Vector2(0, 1f - (i + 1) * 0.25f);
+                    rect.anchorMax = new Vector2(1, 1f - i * 0.25f);
+                    rect.offsetMin = Vector2.zero;
+                    rect.offsetMax = Vector2.zero;
+                    var img = go.AddComponent<Image>();
+                    img.color = new Color(0.15f, 0.08f, 0.25f, 0.9f);
+                    go.AddComponent<Button>();
+                    var textGo = new GameObject("Text");
+                    textGo.transform.SetParent(go.transform, false);
+                    var textRect = textGo.AddComponent<RectTransform>();
+                    textRect.anchorMin = Vector2.zero;
+                    textRect.anchorMax = Vector2.one;
+                    textRect.offsetMin = new Vector2(10, 5);
+                    textRect.offsetMax = new Vector2(-10, -5);
+                    var t = textGo.AddComponent<Text>();
+                    t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                    t.alignment = TextAnchor.MiddleLeft;
+                    t.color = Color.white;
+                    t.fontSize = 20;
+                }
 
                 var btnText = go.GetComponentInChildren<Text>();
                 if (btnText != null) btnText.text = choices[i].text;
 
                 var btn = go.GetComponent<Button>();
-                if (btn != null) btn.onClick.AddListener(() => OnChoiceClicked(index));
+                btn?.onClick.AddListener(() => OnChoiceClicked(index));
 
                 spawnedChoiceButtons.Add(go);
             }
@@ -165,9 +199,9 @@ namespace EndlessBeloved.UI
 
         private void OnChoiceClicked(int index)
         {
-            choicePanel.SetActive(false);
+            if (choicePanel != null) choicePanel.SetActive(false);
             runner.OnChoiceSelected(index);
-            Core.AudioManager.Instance?.PlaySFX("choice_select");
+            AudioManager.Instance?.PlaySFX("choice_select");
         }
 
         private void HandleBackground(string backgroundKey)
@@ -180,8 +214,8 @@ namespace EndlessBeloved.UI
 
         private void HandleChapterEnd()
         {
-            dialoguePanel.SetActive(false);
-            choicePanel.SetActive(false);
+            if (dialoguePanel != null) dialoguePanel.SetActive(false);
+            if (choicePanel != null) choicePanel.SetActive(false);
         }
     }
 }

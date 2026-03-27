@@ -5,42 +5,40 @@ using EndlessBeloved.Core;
 namespace EndlessBeloved.UI
 {
     /// <summary>
-    /// Character setup screen: name entry, pronoun selection, avatar customization.
-    /// Shown at the start of a new game.
+    /// Character setup: name, pronouns, avatar. Auto-wires by name.
     /// </summary>
-    public class CharacterSetupUI : MonoBehaviour
+    public class CharacterSetupUI : AutoWireUI
     {
-        [Header("Name Entry")]
-        [SerializeField] private InputField nameInput;
-        [SerializeField] private Text namePromptText;
-
-        [Header("Pronoun Selection")]
-        [SerializeField] private GameObject pronounPanel;
-        [SerializeField] private Button theyButton;
-        [SerializeField] private Button sheButton;
-        [SerializeField] private Button heButton;
-        [SerializeField] private Text pronounLabel;
-
-        [Header("Avatar")]
-        [SerializeField] private Avatar.AvatarCustomization avatarCustomization;
-        [SerializeField] private GameObject avatarPanel;
-
-        [Header("Navigation")]
-        [SerializeField] private Button nextButton;
-        [SerializeField] private Button backButton;
-        [SerializeField] private string nextScene = "DialogueScene";
-
-        private int step = 0; // 0=name, 1=pronouns, 2=avatar
+        private InputField nameInput;
+        private Text namePromptText;
+        private GameObject pronounPanel;
+        private Button theyButton, sheButton, heButton;
+        private Text pronounLabel;
+        private GameObject avatarPanel;
+        private Button nextButton, backButton;
+        private string nextScene = "DialogueScene";
+        private int step = 0;
 
         private void Start()
         {
-            namePromptText.text = "The cards ask your name.\nWhat do you tell them?";
+            nameInput = FindInput("NameInput");
+            namePromptText = FindTxt("NamePromptText");
+            pronounPanel = Find("PronounPanel");
+            theyButton = FindBtn("TheyButton");
+            sheButton = FindBtn("SheButton");
+            heButton = FindBtn("HeButton");
+            pronounLabel = FindTxt("PronounLabel");
+            avatarPanel = Find("AvatarPanel");
+            nextButton = FindBtn("NextButton");
+            backButton = FindBtn("BackButton");
 
-            theyButton.onClick.AddListener(() => SelectPronouns("they", "them", "their"));
-            sheButton.onClick.AddListener(() => SelectPronouns("she", "her", "her"));
-            heButton.onClick.AddListener(() => SelectPronouns("he", "him", "his"));
+            if (namePromptText != null)
+                namePromptText.text = "The cards ask your name.\nWhat do you tell them?";
 
-            nextButton.onClick.AddListener(NextStep);
+            theyButton?.onClick.AddListener(() => SelectPronouns("they", "them", "their"));
+            sheButton?.onClick.AddListener(() => SelectPronouns("she", "her", "her"));
+            heButton?.onClick.AddListener(() => SelectPronouns("he", "him", "his"));
+            nextButton?.onClick.AddListener(NextStep);
             backButton?.onClick.AddListener(PrevStep);
 
             ShowStep(0);
@@ -49,33 +47,28 @@ namespace EndlessBeloved.UI
         private void ShowStep(int s)
         {
             step = s;
-            nameInput.gameObject.SetActive(s == 0);
-            namePromptText.gameObject.SetActive(s == 0);
-            pronounPanel.SetActive(s == 1);
-            avatarPanel.SetActive(s == 2);
-            if (backButton != null)
-                backButton.interactable = s > 0;
+            if (nameInput != null) nameInput.gameObject.SetActive(s == 0);
+            if (namePromptText != null) namePromptText.gameObject.SetActive(s == 0);
+            if (pronounPanel != null) pronounPanel.SetActive(s == 1);
+            if (avatarPanel != null) avatarPanel.SetActive(s == 2);
+            if (backButton != null) backButton.interactable = s > 0;
         }
 
         private void SelectPronouns(string subject, string obj, string possessive)
         {
             GameState.Instance.SetPronouns(subject, obj, possessive);
-            pronounLabel.text = $"{subject}/{obj}/{possessive}";
-
-            // Visual feedback
-            theyButton.GetComponent<Image>().color = subject == "they" ? Color.white : new Color(0.6f, 0.6f, 0.6f);
-            sheButton.GetComponent<Image>().color = subject == "she" ? Color.white : new Color(0.6f, 0.6f, 0.6f);
-            heButton.GetComponent<Image>().color = subject == "he" ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+            if (pronounLabel != null) pronounLabel.text = $"{subject}/{obj}/{possessive}";
         }
 
         private void NextStep()
         {
             if (step == 0)
             {
-                string name = nameInput.text.Trim();
+                string name = nameInput != null ? nameInput.text.Trim() : "";
                 if (string.IsNullOrEmpty(name))
                 {
-                    namePromptText.text = "The cards insist.\nThey need a name.";
+                    if (namePromptText != null)
+                        namePromptText.text = "The cards insist.\nThey need a name.";
                     return;
                 }
                 GameState.Instance.PlayerName = name;
@@ -84,22 +77,19 @@ namespace EndlessBeloved.UI
             else if (step == 1)
             {
                 ShowStep(2);
-                avatarCustomization?.Initialize();
             }
             else if (step == 2)
             {
-                // Setup complete, start the game
                 GameState.Instance.CurrentChapter = 1;
                 GameState.Instance.CurrentSceneId = "prologue_01";
-                SaveSystem.Instance.SaveGame();
+                SaveSystem.Instance?.SaveGame();
                 SceneFlowManager.Instance.LoadScene(nextScene);
             }
         }
 
         private void PrevStep()
         {
-            if (step > 0)
-                ShowStep(step - 1);
+            if (step > 0) ShowStep(step - 1);
         }
     }
 }

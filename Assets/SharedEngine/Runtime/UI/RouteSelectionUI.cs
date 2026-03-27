@@ -2,94 +2,117 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using EndlessBeloved.Core;
-using EndlessBeloved.Characters;
 
 namespace EndlessBeloved.UI
 {
     /// <summary>
-    /// Route selection screen: pick which character route to play.
-    /// Shows unlocked and locked routes.
+    /// Route selection screen. Auto-wires by name. Creates route buttons dynamically.
     /// </summary>
-    public class RouteSelectionUI : MonoBehaviour
+    public class RouteSelectionUI : AutoWireUI
     {
-        [Header("References")]
-        [SerializeField] private CharacterDatabase characterDatabase;
-        [SerializeField] private Transform routeListParent;
-        [SerializeField] private GameObject routeEntryPrefab;
-        [SerializeField] private Button backButton;
-        [SerializeField] private string dialogueScene = "DialogueScene";
-        [SerializeField] private string altarScene = "AltarHome";
+        private Transform routeListParent;
+        private Button backButton;
+        private string dialogueScene = "DialogueScene";
+        private string altarScene = "AltarHome";
 
-        [Header("Route Entry Layout")]
-        [SerializeField] private Color unlockedColor = Color.white;
-        [SerializeField] private Color lockedColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+        private readonly string[] archetypes = { "oracle", "angel", "keeper", "wanderer", "apprentice", "weaver" };
+        private readonly string[] archetypeNames = { "The Oracle", "The Angel", "The Keeper", "The Wanderer", "The Apprentice", "The Weaver" };
+        private readonly string[] taglines = { "Foresight & fate", "Grace & ruin", "Memory & loss", "Freedom & longing", "Power & becoming", "Threads & endings" };
 
         private List<GameObject> spawnedEntries = new List<GameObject>();
 
         private void Start()
         {
+            routeListParent = Find("RouteList")?.transform;
+            backButton = FindBtn("BackButton");
+
             backButton?.onClick.AddListener(() => SceneFlowManager.Instance.LoadScene(altarScene));
-            Refresh();
+
+            BuildRouteList();
         }
 
-        public void Refresh()
+        private void BuildRouteList()
         {
             foreach (var go in spawnedEntries) Destroy(go);
             spawnedEntries.Clear();
 
-            if (characterDatabase == null) return;
-            characterDatabase.Initialize();
-
             var gs = GameState.Instance;
+            Transform parent = routeListParent ?? transform;
 
-            foreach (var character in characterDatabase.characters)
+            for (int i = 0; i < archetypes.Length; i++)
             {
-                var go = Instantiate(routeEntryPrefab, routeListParent);
-                spawnedEntries.Add(go);
+                string charId = archetypes[i];
+                bool unlocked = gs.IsRouteUnlocked(charId);
+                int affinity = gs.GetAffinity(charId);
+                string tier = gs.GetAffinityTier(charId);
 
-                bool unlocked = character.isStarter || gs.IsRouteUnlocked(character.characterId);
-                string variant = gs.CharacterVariants.ContainsKey(character.characterId)
-                    ? gs.CharacterVariants[character.characterId] : "nonbinary";
+                // Create route entry
+                var entry = new GameObject($"Route_{charId}");
+                entry.transform.SetParent(parent, false);
+                var rect = entry.AddComponent<RectTransform>();
+                rect.sizeDelta = new Vector2(0, 160);
 
-                // Portrait
-                var img = go.transform.Find("Portrait")?.GetComponent<Image>();
-                if (img != null)
-                {
-                    img.sprite = character.GetPortrait("neutral", variant);
-                    img.color = unlocked ? unlockedColor : lockedColor;
-                }
+                var img = entry.AddComponent<Image>();
+                img.color = unlocked
+                    ? new Color(0.15f, 0.08f, 0.25f, 0.8f)
+                    : new Color(0.1f, 0.1f, 0.1f, 0.5f);
 
-                // Name
-                var nameText = go.transform.Find("NameText")?.GetComponent<Text>();
-                if (nameText != null)
-                {
-                    nameText.text = unlocked
-                        ? $"{character.archetype}\n{character.GetName(variant)}"
-                        : $"{character.archetype}\n[Locked]";
-                }
+                // Name text
+                var nameGo = new GameObject("NameText");
+                nameGo.transform.SetParent(entry.transform, false);
+                var nameRect = nameGo.AddComponent<RectTransform>();
+                nameRect.anchorMin = new Vector2(0.05f, 0.5f);
+                nameRect.anchorMax = new Vector2(0.7f, 0.9f);
+                nameRect.offsetMin = Vector2.zero;
+                nameRect.offsetMax = Vector2.zero;
+                var nameText = nameGo.AddComponent<Text>();
+                nameText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                nameText.fontSize = 26;
+                nameText.color = unlocked ? Color.white : new Color(0.4f, 0.4f, 0.4f);
+                nameText.text = unlocked ? archetypeNames[i] : $"{archetypeNames[i]} [LOCKED]";
+                nameText.alignment = TextAnchor.MiddleLeft;
 
                 // Tagline
-                var tagText = go.transform.Find("TaglineText")?.GetComponent<Text>();
-                if (tagText != null)
-                    tagText.text = unlocked ? character.tagline : "???";
-
-                // Affinity bar
-                var affBar = go.transform.Find("AffinityBar")?.GetComponent<Slider>();
-                if (affBar != null)
-                {
-                    affBar.maxValue = 100;
-                    affBar.value = unlocked ? gs.GetAffinity(character.characterId) : 0;
-                    affBar.gameObject.SetActive(unlocked);
-                }
+                var tagGo = new GameObject("TaglineText");
+                tagGo.transform.SetParent(entry.transform, false);
+                var tagRect = tagGo.AddComponent<RectTransform>();
+                tagRect.anchorMin = new Vector2(0.05f, 0.1f);
+                tagRect.anchorMax = new Vector2(0.7f, 0.5f);
+                tagRect.offsetMin = Vector2.zero;
+                tagRect.offsetMax = Vector2.zero;
+                var tagText = tagGo.AddComponent<Text>();
+                tagText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                tagText.fontSize = 18;
+                tagText.color = unlocked ? new Color(0.7f, 0.6f, 0.8f) : new Color(0.3f, 0.3f, 0.3f);
+                tagText.text = unlocked ? $"{taglines[i]}\nAffinity: {affinity}/100 ({tier})" : "???";
+                tagText.alignment = TextAnchor.MiddleLeft;
 
                 // Button
-                var btn = go.GetComponent<Button>();
-                if (btn != null)
-                {
-                    btn.interactable = unlocked;
-                    string charId = character.characterId;
-                    btn.onClick.AddListener(() => SelectRoute(charId));
-                }
+                var btn = entry.AddComponent<Button>();
+                btn.targetGraphic = img;
+                btn.interactable = unlocked;
+                string id = charId;
+                btn.onClick.AddListener(() => SelectRoute(id));
+
+                spawnedEntries.Add(entry);
+            }
+
+            // Add vertical layout
+            var layout = parent.gameObject.GetComponent<VerticalLayoutGroup>();
+            if (layout == null)
+            {
+                layout = parent.gameObject.AddComponent<VerticalLayoutGroup>();
+                layout.spacing = 15;
+                layout.childForceExpandWidth = true;
+                layout.childForceExpandHeight = false;
+                layout.padding = new RectOffset(10, 10, 10, 10);
+            }
+
+            var fitter = parent.gameObject.GetComponent<ContentSizeFitter>();
+            if (fitter == null)
+            {
+                fitter = parent.gameObject.AddComponent<ContentSizeFitter>();
+                fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             }
         }
 
@@ -97,8 +120,8 @@ namespace EndlessBeloved.UI
         {
             var gs = GameState.Instance;
             gs.ActiveRoute = characterId;
-            gs.CurrentSceneId = $"{characterId}_ch{gs.CurrentChapter}_01";
-            SaveSystem.Instance.SaveGame();
+            gs.CurrentSceneId = "oracle_ch1_01"; // Default to first story node
+            SaveSystem.Instance?.SaveGame();
             SceneFlowManager.Instance.LoadScene(dialogueScene);
         }
     }

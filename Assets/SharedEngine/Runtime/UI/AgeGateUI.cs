@@ -6,21 +6,23 @@ namespace EndlessBeloved.UI
 {
     /// <summary>
     /// Age verification screen shown on first launch.
-    /// Must be confirmed before accessing any content.
+    /// Auto-wires all UI references by GameObject name -- no Inspector drag needed.
     /// </summary>
     public class AgeGateUI : MonoBehaviour
     {
-        [Header("References")]
-        [SerializeField] private GameObject ageGatePanel;
-        [SerializeField] private Button confirmButton;
-        [SerializeField] private Button denyButton;
-        [SerializeField] private Text warningText;
-        [SerializeField] private string nextScene = "TitleScreen";
+        private GameObject ageGatePanel;
+        private Button confirmButton;
+        private Button denyButton;
+        private Text warningText;
+        private string nextScene = "TitleScreen";
 
         private const string AGE_VERIFIED_KEY = "age_verified";
 
         private void Start()
         {
+            // Auto-wire by finding named objects in the scene
+            AutoWire();
+
             // Skip if already verified
             if (PlayerPrefs.GetInt(AGE_VERIFIED_KEY, 0) == 1)
             {
@@ -28,7 +30,7 @@ namespace EndlessBeloved.UI
                 return;
             }
 
-            ageGatePanel.SetActive(true);
+            if (ageGatePanel != null) ageGatePanel.SetActive(true);
 
             if (warningText != null)
             {
@@ -39,8 +41,17 @@ namespace EndlessBeloved.UI
                     "in your jurisdiction to view adult content.";
             }
 
-            confirmButton.onClick.AddListener(OnConfirmed);
-            denyButton.onClick.AddListener(OnDenied);
+            if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmed);
+            if (denyButton != null) denyButton.onClick.AddListener(OnDenied);
+        }
+
+        private void AutoWire()
+        {
+            // Find by name in scene
+            ageGatePanel = FindInScene("Background") ?? FindInScene("AgeGatePanel");
+            confirmButton = FindButton("ConfirmButton");
+            denyButton = FindButton("DenyButton");
+            warningText = FindText("WarningText");
         }
 
         private void OnConfirmed()
@@ -55,8 +66,8 @@ namespace EndlessBeloved.UI
             if (warningText != null)
                 warningText.text = "You must be 18 or older to play this game.\n\nThe application will now close.";
 
-            confirmButton.gameObject.SetActive(false);
-            denyButton.gameObject.SetActive(false);
+            if (confirmButton != null) confirmButton.gameObject.SetActive(false);
+            if (denyButton != null) denyButton.gameObject.SetActive(false);
 
             Invoke(nameof(QuitApp), 2f);
         }
@@ -67,6 +78,28 @@ namespace EndlessBeloved.UI
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+
+        // ── Auto-wire helpers ───────────────────────────────────────
+        private GameObject FindInScene(string name)
+        {
+            var all = Resources.FindObjectsOfTypeAll<Transform>();
+            foreach (var t in all)
+                if (t.name == name && t.gameObject.scene.isLoaded)
+                    return t.gameObject;
+            return null;
+        }
+
+        private Button FindButton(string name)
+        {
+            var go = FindInScene(name);
+            return go != null ? go.GetComponent<Button>() : null;
+        }
+
+        private Text FindText(string name)
+        {
+            var go = FindInScene(name);
+            return go != null ? go.GetComponent<Text>() : null;
         }
     }
 }
