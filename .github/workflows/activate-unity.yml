@@ -11,12 +11,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Generate .alf activation request file using Docker
+      # Free up disk space first
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
+          sudo apt-get clean
+          df -h /
+
+      # Generate .alf activation request file using base image (smaller, no Android needed)
       - name: Generate activation file
         run: |
           docker run --rm \
-            -v "$PWD:/project" \
-            unityci/editor:ubuntu-2022.3.20f1-android-3 \
+            unityci/editor:ubuntu-2022.3.20f1-base-3 \
             unity-editor \
               -batchmode \
               -nographics \
@@ -24,11 +30,25 @@ jobs:
               -logFile /dev/stdout \
             || true
           
-          # Find and move the .alf file
-          find . -name "*.alf" -exec cp {} Unity_v2022.3.20f1.alf \;
+          # The .alf file is created inside the container; extract it
+          CONTAINER_ID=$(docker create unityci/editor:ubuntu-2022.3.20f1-base-3)
+          docker cp $CONTAINER_ID:/Unity_v2022.3.20f1.alf ./Unity_v2022.3.20f1.alf 2>/dev/null || true
+          docker rm $CONTAINER_ID 2>/dev/null || true
+          
+          # Also check current directory and /tmp
+          find / -maxdepth 3 -name "*.alf" 2>/dev/null -exec cp {} ./Unity_v2022.3.20f1.alf \; || true
           
           if [ ! -f Unity_v2022.3.20f1.alf ]; then
-            echo "ERROR: No .alf file generated"
+            # Alternative: run with volume mount
+            docker run --rm -v "$PWD:/output" \
+              unityci/editor:ubuntu-2022.3.20f1-base-3 \
+              bash -c 'unity-editor -batchmode -nographics -createManualActivationFile -logFile /dev/stdout || true; cp /*.alf /output/ 2>/dev/null; find / -maxdepth 3 -name "*.alf" -exec cp {} /output/ \; 2>/dev/null' \
+              || true
+          fi
+          
+          if [ ! -f Unity_v2022.3.20f1.alf ]; then
+            echo "ERROR: No .alf file generated. Check logs above."
+            ls -la *.alf 2>/dev/null || echo "No .alf files found"
             exit 1
           fi
           
