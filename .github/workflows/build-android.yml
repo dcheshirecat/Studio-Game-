@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   UNITY_VERSION: 2022.3.20f1
 
 jobs:
@@ -30,19 +29,31 @@ jobs:
           restore-keys: |
             Library-Android-
 
+      # Unity license activation
+      - name: Activate Unity license
+        uses: game-ci/unity-activate@v2
+        if: env.UNITY_LICENSE != ''
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+      # Build using our custom build script that generates scenes first
       - name: Build Android APK
         uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: Android
           unityVersion: ${{ env.UNITY_VERSION }}
           androidAppBundle: false
-          androidKeystoreName: user.keystore
+          # Use our build script that generates scenes then builds
+          buildMethod: EndlessBeloved.Editor.BuildScript.BuildAndroid
+          # Keystore config -- uses debug signing if secrets aren't set
+          androidKeystoreName: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' && 'user.keystore' || '' }}
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
           buildName: EndlessBelovedHeal
-          buildMethod: ""
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -52,7 +63,7 @@ jobs:
           retention-days: 14
 
       - name: Upload to itch.io (optional)
-        if: github.ref == 'refs/heads/main' && secrets.BUTLER_API_KEY != ''
+        if: github.ref == 'refs/heads/main' && env.BUTLER_API_KEY != ''
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
