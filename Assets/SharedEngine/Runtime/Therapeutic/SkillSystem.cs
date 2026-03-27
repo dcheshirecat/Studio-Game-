@@ -15,7 +15,11 @@ namespace EndlessBeloved.Therapeutic
         public static SkillSystem Instance { get; private set; }
 
         [SerializeField] private List<SkillData> allSkills = new List<SkillData>();
-        [SerializeField] private bool isEnabled = true; // disable for dark fantasy version
+#if DARK_VERSION
+        [SerializeField] private bool isEnabled = false; // auto-disabled in dark fantasy version
+#else
+        [SerializeField] private bool isEnabled = true;  // enabled in Heal version
+#endif
 
         private List<string> unlockedSkillIds = new List<string>();
 
