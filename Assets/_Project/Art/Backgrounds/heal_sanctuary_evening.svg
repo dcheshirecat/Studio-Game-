@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3020"/>
+      <stop offset="50%" stop-color="#2a4a30"/>
+      <stop offset="100%" stop-color="#0d1a0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="800" cy="300" r="100" fill="#ff8844" opacity="0.15"/>
+  <rect x="0" y="1400" width="1080" height="520" fill="#0d1a0d" opacity="0.6"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">SANCTUARY - EVENING</text>
+</svg>

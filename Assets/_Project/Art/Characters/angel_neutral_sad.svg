@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="960" viewBox="0 0 540 960">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cc8844"/>
+      <stop offset="100%" stop-color="#8a5522"/>
+    </linearGradient>
+    <radialGradient id="face_glow" cx="50%" cy="35%" r="30%">
+      <stop offset="0%" stop-color="#cc8844" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="540" height="960" fill="transparent"/>
+  <!-- Body silhouette -->
+  <ellipse cx="270" cy="700" rx="160" ry="260" fill="url(#body)" opacity="0.8"/>
+  <!-- Head -->
+  <circle cx="265" cy="250" r="120" fill="#cc8844" opacity="0.9"/>
+  <!-- Face glow -->
+  <circle cx="265" cy="240" r="90" fill="url(#face_glow)"/>
+  <!-- Eyes -->
+  <path d="M205,275 Q220,285 235,275" fill="none" stroke="#fff" stroke-width="3" opacity="0.8"/><path d="M295,275 Q310,285 325,275" fill="none" stroke="#fff" stroke-width="3" opacity="0.8"/>
+  <!-- Mouth hint -->
+  <line x1="240" y1="320" x2="290" y2="320" stroke="#fff" stroke-width="2" opacity="0.3"/>
+  <!-- Label -->
+  <text x="270" y="920" text-anchor="middle" fill="#888" font-size="18" font-family="sans-serif">ANGEL - sad</text>
+</svg>

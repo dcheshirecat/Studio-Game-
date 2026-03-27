@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3a2a"/>
+      <stop offset="50%" stop-color="#3d5040"/>
+      <stop offset="100%" stop-color="#1a2a1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <rect x="200" y="700" width="680" height="400" rx="15" fill="#2a3a2a" stroke="#6a9070" stroke-width="2"/>
+  <rect x="350" y="750" width="380" height="200" rx="10" fill="#1a2a1a" stroke="#5a8060" stroke-width="1"/>
+  <circle cx="300" cy="650" r="25" fill="#ffcc44" opacity="0.3"/>
+  <circle cx="780" cy="650" r="25" fill="#ffcc44" opacity="0.3"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">ORACLE SANCTUARY</text>
+</svg>
