@@ -38,24 +38,29 @@ jobs:
             Library-Android-Heal-
             Library-Android-
 
+      - name: Write credentials
+        run: |
+          echo '${{ secrets.UNITY_EMAIL }}' > /tmp/unity_email.txt
+          echo '${{ secrets.UNITY_PASSWORD }}' > /tmp/unity_password.txt
+
       - name: Activate and Build Heal APK
         run: |
-          # Pull the Unity Docker image
           docker pull $UNITY_IMAGE
 
-          # Run Unity: activate license with email/password, then build
           docker run --rm \
-            -e UNITY_EMAIL="${{ secrets.UNITY_EMAIL }}" \
-            -e UNITY_PASSWORD="${{ secrets.UNITY_PASSWORD }}" \
             -v "$PWD:/project" \
+            -v "/tmp/unity_email.txt:/tmp/unity_email.txt:ro" \
+            -v "/tmp/unity_password.txt:/tmp/unity_password.txt:ro" \
             -w /project \
             $UNITY_IMAGE \
             bash -c '
-              set -e
+              UEMAIL=$(cat /tmp/unity_email.txt)
+              UPASS=$(cat /tmp/unity_password.txt)
+
               echo "=== Activating Unity License ==="
               unity-editor -batchmode -nographics \
-                -username "$UNITY_EMAIL" \
-                -password "$UNITY_PASSWORD" \
+                -username "$UEMAIL" \
+                -password "$UPASS" \
                 -quit \
                 -logFile /dev/stdout || true
 
@@ -67,6 +72,10 @@ jobs:
                 -logFile /dev/stdout \
                 -quit
             '
+
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f /tmp/unity_email.txt /tmp/unity_password.txt
 
       - name: Upload Heal APK
         uses: actions/upload-artifact@v4
@@ -103,24 +112,29 @@ jobs:
             Library-Android-Dark-
             Library-Android-
 
+      - name: Write credentials
+        run: |
+          echo '${{ secrets.UNITY_EMAIL }}' > /tmp/unity_email.txt
+          echo '${{ secrets.UNITY_PASSWORD }}' > /tmp/unity_password.txt
+
       - name: Activate and Build Dark APK
         run: |
-          # Pull the Unity Docker image
           docker pull $UNITY_IMAGE
 
-          # Run Unity: activate license with email/password, then build
           docker run --rm \
-            -e UNITY_EMAIL="${{ secrets.UNITY_EMAIL }}" \
-            -e UNITY_PASSWORD="${{ secrets.UNITY_PASSWORD }}" \
             -v "$PWD:/project" \
+            -v "/tmp/unity_email.txt:/tmp/unity_email.txt:ro" \
+            -v "/tmp/unity_password.txt:/tmp/unity_password.txt:ro" \
             -w /project \
             $UNITY_IMAGE \
             bash -c '
-              set -e
+              UEMAIL=$(cat /tmp/unity_email.txt)
+              UPASS=$(cat /tmp/unity_password.txt)
+
               echo "=== Activating Unity License ==="
               unity-editor -batchmode -nographics \
-                -username "$UNITY_EMAIL" \
-                -password "$UNITY_PASSWORD" \
+                -username "$UEMAIL" \
+                -password "$UPASS" \
                 -quit \
                 -logFile /dev/stdout || true
 
@@ -132,6 +146,10 @@ jobs:
                 -logFile /dev/stdout \
                 -quit
             '
+
+      - name: Cleanup credentials
+        if: always()
+        run: rm -f /tmp/unity_email.txt /tmp/unity_password.txt
 
       - name: Upload Dark APK
         uses: actions/upload-artifact@v4
