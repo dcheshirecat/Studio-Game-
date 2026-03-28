@@ -24,6 +24,7 @@ namespace EndlessBeloved.Editor
         {
             Debug.Log("=== BuildScript: Building HEAL variant ===");
             SceneGenerator.GenerateAllScenes();
+            IconGenerator.ApplyIcons(isHeal: true);
             BuildVariant(
                 buildName: "EndlessBelovedHeal",
                 outputPath: "build/Android/EndlessBelovedHeal.apk",
@@ -40,6 +41,7 @@ namespace EndlessBeloved.Editor
         {
             Debug.Log("=== BuildScript: Building DARK variant ===");
             SceneGenerator.GenerateAllScenes();
+            IconGenerator.ApplyIcons(isHeal: false);
             BuildVariant(
                 buildName: "EndlessBelovedDark",
                 outputPath: "build/Android/EndlessBelovedDark.apk",
