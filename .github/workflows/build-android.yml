@@ -7,7 +7,6 @@ on:
 
 env:
   UNITY_VERSION: 2022.3.20f1
-  UNITY_IMAGE: unityci/editor:ubuntu-2022.3.20f1-android-3
 
 jobs:
   # ── Build Heal (Therapeutic) variant ─────────────────────────────
@@ -38,50 +37,24 @@ jobs:
             Library-Android-Heal-
             Library-Android-
 
-      - name: Prepare license file
-        run: |
-          # Write ULF license to a file that can be mounted into Docker
-          echo '${{ secrets.UNITY_LICENSE }}' > /tmp/unity_license.ulf
-
-      - name: Activate and Build Heal APK
-        run: |
-          docker pull $UNITY_IMAGE
-
-          docker run --rm \
-            -v "$PWD:/project" \
-            -v "/tmp/unity_license.ulf:/tmp/unity_license.ulf:ro" \
-            -w /project \
-            $UNITY_IMAGE \
-            bash -c '
-              set -e
-
-              echo "=== Installing Unity License ==="
-              mkdir -p /root/.local/share/unity3d/Unity
-              cp /tmp/unity_license.ulf /root/.local/share/unity3d/Unity/Unity_lic.ulf
-              echo "License file installed."
-
-              echo "=== Verifying License ==="
-              unity-editor -batchmode -nographics -quit -logFile /dev/stdout || true
-              echo "License verification complete."
-
-              echo "=== Building Heal APK ==="
-              unity-editor -batchmode -nographics \
-                -projectPath /project \
-                -executeMethod EndlessBeloved.Editor.BuildScript.BuildHeal \
-                -buildTarget Android \
-                -logFile /dev/stdout \
-                -quit
-            '
-
-      - name: Cleanup license
-        if: always()
-        run: rm -f /tmp/unity_license.ulf
+      - name: Build Heal APK
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          unityVersion: 2022.3.20f1
+          buildMethod: EndlessBeloved.Editor.BuildScript.BuildHeal
+          buildName: EndlessBelovedHeal
+          androidAppBundle: false
 
       - name: Upload Heal APK
         uses: actions/upload-artifact@v4
         with:
           name: EndlessBeloved-Heal-APK
-          path: build/Android/*.apk
+          path: build/Android/**/*.apk
           retention-days: 14
 
   # ── Build Dark (Fantasy) variant ────────────────────────────────
@@ -112,47 +85,22 @@ jobs:
             Library-Android-Dark-
             Library-Android-
 
-      - name: Prepare license file
-        run: |
-          echo '${{ secrets.UNITY_LICENSE }}' > /tmp/unity_license.ulf
-
-      - name: Activate and Build Dark APK
-        run: |
-          docker pull $UNITY_IMAGE
-
-          docker run --rm \
-            -v "$PWD:/project" \
-            -v "/tmp/unity_license.ulf:/tmp/unity_license.ulf:ro" \
-            -w /project \
-            $UNITY_IMAGE \
-            bash -c '
-              set -e
-
-              echo "=== Installing Unity License ==="
-              mkdir -p /root/.local/share/unity3d/Unity
-              cp /tmp/unity_license.ulf /root/.local/share/unity3d/Unity/Unity_lic.ulf
-              echo "License file installed."
-
-              echo "=== Verifying License ==="
-              unity-editor -batchmode -nographics -quit -logFile /dev/stdout || true
-              echo "License verification complete."
-
-              echo "=== Building Dark APK ==="
-              unity-editor -batchmode -nographics \
-                -projectPath /project \
-                -executeMethod EndlessBeloved.Editor.BuildScript.BuildDark \
-                -buildTarget Android \
-                -logFile /dev/stdout \
-                -quit
-            '
-
-      - name: Cleanup license
-        if: always()
-        run: rm -f /tmp/unity_license.ulf
+      - name: Build Dark APK
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          unityVersion: 2022.3.20f1
+          buildMethod: EndlessBeloved.Editor.BuildScript.BuildDark
+          buildName: EndlessBelovedDark
+          androidAppBundle: false
 
       - name: Upload Dark APK
         uses: actions/upload-artifact@v4
         with:
           name: EndlessBeloved-Dark-APK
-          path: build/Android/*.apk
+          path: build/Android/**/*.apk
           retention-days: 14

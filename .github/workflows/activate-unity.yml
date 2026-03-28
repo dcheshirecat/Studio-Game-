@@ -1,82 +1,22 @@
-name: Activate Unity License
+name: Get Unity Activation File
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 jobs:
-  request-activation:
-    name: Generate Unity Activation File
+  request-alf:
+    name: Request activation file
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Request manual activation file
+        id: getManualLicenseFile
+        uses: game-ci/unity-request-activation-file@v2
+        with:
+          unityVersion: 2022.3.20f1
 
-      # Free up disk space first
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
-          sudo apt-get clean
-          df -h /
-
-      # Generate .alf activation request file using base image (smaller, no Android needed)
-      - name: Generate activation file
-        run: |
-          docker run --rm \
-            unityci/editor:ubuntu-2022.3.20f1-base-3 \
-            unity-editor \
-              -batchmode \
-              -nographics \
-              -createManualActivationFile \
-              -logFile /dev/stdout \
-            || true
-          
-          # The .alf file is created inside the container; extract it
-          CONTAINER_ID=$(docker create unityci/editor:ubuntu-2022.3.20f1-base-3)
-          docker cp $CONTAINER_ID:/Unity_v2022.3.20f1.alf ./Unity_v2022.3.20f1.alf 2>/dev/null || true
-          docker rm $CONTAINER_ID 2>/dev/null || true
-          
-          # Also check current directory and /tmp
-          find / -maxdepth 3 -name "*.alf" 2>/dev/null -exec cp {} ./Unity_v2022.3.20f1.alf \; || true
-          
-          if [ ! -f Unity_v2022.3.20f1.alf ]; then
-            # Alternative: run with volume mount
-            docker run --rm -v "$PWD:/output" \
-              unityci/editor:ubuntu-2022.3.20f1-base-3 \
-              bash -c 'unity-editor -batchmode -nographics -createManualActivationFile -logFile /dev/stdout || true; cp /*.alf /output/ 2>/dev/null; find / -maxdepth 3 -name "*.alf" -exec cp {} /output/ \; 2>/dev/null' \
-              || true
-          fi
-          
-          if [ ! -f Unity_v2022.3.20f1.alf ]; then
-            echo "ERROR: No .alf file generated. Check logs above."
-            ls -la *.alf 2>/dev/null || echo "No .alf files found"
-            exit 1
-          fi
-          
-          echo "Activation file generated successfully"
-          ls -la Unity_v2022.3.20f1.alf
-
-      - name: Upload activation file
+      - name: Expose as artifact
         uses: actions/upload-artifact@v4
         with:
           name: Unity_v2022.3.20f1.alf
-          path: Unity_v2022.3.20f1.alf
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
           retention-days: 1
-
-      - name: Instructions
-        run: |
-          echo ""
-          echo "============================================="
-          echo "  NEXT STEPS TO COMPLETE LICENSE ACTIVATION"
-          echo "============================================="
-          echo ""
-          echo "1. Download the artifact 'Unity_v2022.3.20f1.alf' from this workflow run"
-          echo "2. Go to: https://license.unity3d.com/manual"
-          echo "3. Upload the .alf file"
-          echo "4. Select 'Unity Personal' license"
-          echo "5. Download the resulting .ulf file"
-          echo "6. Go to: https://github.com/${{ github.repository }}/settings/secrets/actions"
-          echo "7. Create secret named UNITY_LICENSE"
-          echo "8. Paste the ENTIRE contents of the .ulf file as the value"
-          echo "9. Re-run the 'Build Android APKs' workflow"
-          echo ""
-          echo "============================================="
