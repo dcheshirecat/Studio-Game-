@@ -5,6 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace EndlessBeloved.Editor
 {
@@ -195,12 +196,12 @@ namespace EndlessBeloved.Editor
             SetAnchors(inputGo, 0.15f, 0.45f, 0.85f, 0.55f);
             var inputImg = inputGo.AddComponent<Image>();
             inputImg.color = new Color(0.15f, 0.08f, 0.25f);
-            var input = inputGo.AddComponent<InputField>();
+            var input = inputGo.AddComponent<TMP_InputField>();
             var inputText = CreateText(inputGo.transform, "InputText", "", 28, Color.white, TextAnchor.MiddleCenter);
             var placeholder = CreateText(inputGo.transform, "Placeholder", "Enter your name...",
                 28, new Color(0.5f, 0.5f, 0.5f), TextAnchor.MiddleCenter);
-            input.textComponent = inputText.GetComponent<Text>();
-            input.placeholder = placeholder.GetComponent<Text>();
+            input.textComponent = inputText.GetComponent<TMP_Text>();
+            input.placeholder = placeholder.GetComponent<TMP_Text>();
 
             // Pronoun panel (hidden initially)
             var pronounPanel = CreatePanel(canvas.transform, "PronounPanel", new Color(0, 0, 0, 0));
@@ -501,16 +502,31 @@ namespace EndlessBeloved.Editor
             rect.anchorMax = Vector2.one;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
-            var t = go.AddComponent<Text>();
+            var t = go.AddComponent<TextMeshProUGUI>();
             t.text = text;
             t.fontSize = fontSize;
             t.color = color;
-            t.alignment = alignment;
-            t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            t.horizontalOverflow = HorizontalWrapMode.Wrap;
-            t.verticalOverflow = VerticalWrapMode.Truncate;
-            t.resizeTextForBestFit = false;
+            t.alignment = TextAnchorToTMPAlignment(alignment);
+            t.enableWordWrapping = true;
+            t.textWrappingMode = TextWrappingModes.Normal;
             return go;
+        }
+
+        static TextAlignmentOptions TextAnchorToTMPAlignment(TextAnchor anchor)
+        {
+            return anchor switch
+            {
+                TextAnchor.UpperLeft => TextAlignmentOptions.Left,
+                TextAnchor.UpperCenter => TextAlignmentOptions.Center,
+                TextAnchor.UpperRight => TextAlignmentOptions.Right,
+                TextAnchor.MiddleLeft => TextAlignmentOptions.Left,
+                TextAnchor.MiddleCenter => TextAlignmentOptions.Center,
+                TextAnchor.MiddleRight => TextAlignmentOptions.Right,
+                TextAnchor.LowerLeft => TextAlignmentOptions.Left,
+                TextAnchor.LowerCenter => TextAlignmentOptions.Center,
+                TextAnchor.LowerRight => TextAlignmentOptions.Right,
+                _ => TextAlignmentOptions.Center
+            };
         }
 
         static GameObject CreateButton(Transform parent, string name, string label,

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -13,7 +14,7 @@ namespace EndlessBeloved.UI
         private GameObject ageGatePanel;
         private Button confirmButton;
         private Button denyButton;
-        private Text warningText;
+        private TMP_Text warningText;
         private string nextScene = "TitleScreen";
 
         private const string AGE_VERIFIED_KEY = "age_verified";

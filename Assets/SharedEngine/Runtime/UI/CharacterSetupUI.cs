@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -9,11 +10,11 @@ namespace EndlessBeloved.UI
     /// </summary>
     public class CharacterSetupUI : AutoWireUI
     {
-        private InputField nameInput;
-        private Text namePromptText;
+        private TMP_InputField nameInput;
+        private TMP_Text namePromptText;
         private GameObject pronounPanel;
         private Button theyButton, sheButton, heButton;
-        private Text pronounLabel;
+        private TMP_Text pronounLabel;
         private GameObject avatarPanel;
         private Button nextButton, backButton;
         private string nextScene = "DialogueScene";

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Dialogue;
 using EndlessBeloved.Core;
 
@@ -11,8 +12,8 @@ namespace EndlessBeloved.UI
     /// </summary>
     public class DialogueBoxUI : AutoWireUI
     {
-        private Text speakerNameText;
-        private Text dialogueText;
+        private TMP_Text speakerNameText;
+        private TMP_Text dialogueText;
         private Image portraitImage;
         private Image backgroundImage;
         private GameObject dialoguePanel;

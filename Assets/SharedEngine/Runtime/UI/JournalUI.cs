@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 using EndlessBeloved.Tarot;
 
@@ -27,9 +28,9 @@ namespace EndlessBeloved.UI
         [SerializeField] private Button closeButton;
 
         [Header("Progress")]
-        [SerializeField] private Text chapterText;
-        [SerializeField] private Text cycleText;
-        [SerializeField] private Text endingsText;
+        [SerializeField] private TMP_Text chapterText;
+        [SerializeField] private TMP_Text cycleText;
+        [SerializeField] private TMP_Text endingsText;
 
         [Header("Cards")]
         [SerializeField] private Transform cardGridParent;
