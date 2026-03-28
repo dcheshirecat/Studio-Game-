@@ -104,10 +104,10 @@ namespace EndlessBeloved.UI
             return go != null ? go.GetComponent<Button>() : null;
         }
 
-        private Text FindText(string name)
+        private TMP_Text FindText(string name)
         {
             var go = FindInScene(name);
-            return go != null ? go.GetComponent<Text>() : null;
+            return go != null ? go.GetComponent<TMP_Text>() : null;
         }
     }
 }
