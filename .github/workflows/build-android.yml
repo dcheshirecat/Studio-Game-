@@ -49,8 +49,9 @@ jobs:
           buildMethod: EndlessBeloved.Editor.BuildScript.BuildHeal
           buildName: EndlessBelovedHeal
           androidAppBundle: false
+          androidTargetSdkVersion: 35
 
-      - name: Upload Heal APK
+      - name: Upload Heal APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: EndlessBeloved-Heal-APK
@@ -97,10 +98,58 @@ jobs:
           buildMethod: EndlessBeloved.Editor.BuildScript.BuildDark
           buildName: EndlessBelovedDark
           androidAppBundle: false
+          androidTargetSdkVersion: 35
 
-      - name: Upload Dark APK
+      - name: Upload Dark APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: EndlessBeloved-Dark-APK
           path: build/Android/**/*.apk
           retention-days: 14
+
+  # ── Create Release with direct APK downloads ────────────────────
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-heal, build-dark]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Heal APK
+        uses: actions/download-artifact@v4
+        with:
+          name: EndlessBeloved-Heal-APK
+          path: apks/heal
+
+      - name: Download Dark APK
+        uses: actions/download-artifact@v4
+        with:
+          name: EndlessBeloved-Dark-APK
+          path: apks/dark
+
+      - name: Prepare APK files
+        run: |
+          # Find and rename APK files for clean download names
+          find apks/heal -name "*.apk" -exec cp {} EndlessBeloved-Heal.apk \;
+          find apks/dark -name "*.apk" -exec cp {} EndlessBeloved-Dark.apk \;
+          ls -la *.apk
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }} (${{ github.ref_name }})
+          body: |
+            Automated build from branch `${{ github.ref_name }}` at commit ${{ github.sha }}.
+
+            **Download APK files directly:**
+            - **EndlessBeloved-Heal.apk** - Therapeutic visual novel variant (purple/gold icon)
+            - **EndlessBeloved-Dark.apk** - Dark fantasy variant (black/crimson icon)
+
+            Install: Download the APK, open it on your Android device, and allow installation from unknown sources when prompted.
+          files: |
+            EndlessBeloved-Heal.apk
+            EndlessBeloved-Dark.apk
+          prerelease: true
+          make_latest: true

@@ -185,7 +185,7 @@ PlayerSettings:
   iPhoneBundleIdentifier: com.endlessbeloved.heal
   AndroidBundleVersionCode: 1
   androidMinSdkVersion: 24
-  androidTargetSdkVersion: 34
+  androidTargetSdkVersion: 35
   AndroidKeyaliasName:
   AndroidKeyaliasPass:
   AndroidKeystorePass:
