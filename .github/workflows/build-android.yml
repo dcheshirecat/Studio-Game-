@@ -38,10 +38,10 @@ jobs:
             Library-Android-Heal-
             Library-Android-
 
-      - name: Write credentials
+      - name: Prepare license file
         run: |
-          echo '${{ secrets.UNITY_EMAIL }}' > /tmp/unity_email.txt
-          echo '${{ secrets.UNITY_PASSWORD }}' > /tmp/unity_password.txt
+          # Write ULF license to a file that can be mounted into Docker
+          echo '${{ secrets.UNITY_LICENSE }}' > /tmp/unity_license.ulf
 
       - name: Activate and Build Heal APK
         run: |
@@ -49,20 +49,20 @@ jobs:
 
           docker run --rm \
             -v "$PWD:/project" \
-            -v "/tmp/unity_email.txt:/tmp/unity_email.txt:ro" \
-            -v "/tmp/unity_password.txt:/tmp/unity_password.txt:ro" \
+            -v "/tmp/unity_license.ulf:/tmp/unity_license.ulf:ro" \
             -w /project \
             $UNITY_IMAGE \
             bash -c '
-              UEMAIL=$(cat /tmp/unity_email.txt)
-              UPASS=$(cat /tmp/unity_password.txt)
+              set -e
 
-              echo "=== Activating Unity License ==="
-              unity-editor -batchmode -nographics \
-                -username "$UEMAIL" \
-                -password "$UPASS" \
-                -quit \
-                -logFile /dev/stdout || true
+              echo "=== Installing Unity License ==="
+              mkdir -p /root/.local/share/unity3d/Unity
+              cp /tmp/unity_license.ulf /root/.local/share/unity3d/Unity/Unity_lic.ulf
+              echo "License file installed."
+
+              echo "=== Verifying License ==="
+              unity-editor -batchmode -nographics -quit -logFile /dev/stdout || true
+              echo "License verification complete."
 
               echo "=== Building Heal APK ==="
               unity-editor -batchmode -nographics \
@@ -73,9 +73,9 @@ jobs:
                 -quit
             '
 
-      - name: Cleanup credentials
+      - name: Cleanup license
         if: always()
-        run: rm -f /tmp/unity_email.txt /tmp/unity_password.txt
+        run: rm -f /tmp/unity_license.ulf
 
       - name: Upload Heal APK
         uses: actions/upload-artifact@v4
@@ -112,10 +112,9 @@ jobs:
             Library-Android-Dark-
             Library-Android-
 
-      - name: Write credentials
+      - name: Prepare license file
         run: |
-          echo '${{ secrets.UNITY_EMAIL }}' > /tmp/unity_email.txt
-          echo '${{ secrets.UNITY_PASSWORD }}' > /tmp/unity_password.txt
+          echo '${{ secrets.UNITY_LICENSE }}' > /tmp/unity_license.ulf
 
       - name: Activate and Build Dark APK
         run: |
@@ -123,20 +122,20 @@ jobs:
 
           docker run --rm \
             -v "$PWD:/project" \
-            -v "/tmp/unity_email.txt:/tmp/unity_email.txt:ro" \
-            -v "/tmp/unity_password.txt:/tmp/unity_password.txt:ro" \
+            -v "/tmp/unity_license.ulf:/tmp/unity_license.ulf:ro" \
             -w /project \
             $UNITY_IMAGE \
             bash -c '
-              UEMAIL=$(cat /tmp/unity_email.txt)
-              UPASS=$(cat /tmp/unity_password.txt)
+              set -e
 
-              echo "=== Activating Unity License ==="
-              unity-editor -batchmode -nographics \
-                -username "$UEMAIL" \
-                -password "$UPASS" \
-                -quit \
-                -logFile /dev/stdout || true
+              echo "=== Installing Unity License ==="
+              mkdir -p /root/.local/share/unity3d/Unity
+              cp /tmp/unity_license.ulf /root/.local/share/unity3d/Unity/Unity_lic.ulf
+              echo "License file installed."
+
+              echo "=== Verifying License ==="
+              unity-editor -batchmode -nographics -quit -logFile /dev/stdout || true
+              echo "License verification complete."
 
               echo "=== Building Dark APK ==="
               unity-editor -batchmode -nographics \
@@ -147,9 +146,9 @@ jobs:
                 -quit
             '
 
-      - name: Cleanup credentials
+      - name: Cleanup license
         if: always()
-        run: rm -f /tmp/unity_email.txt /tmp/unity_password.txt
+        run: rm -f /tmp/unity_license.ulf
 
       - name: Upload Dark APK
         uses: actions/upload-artifact@v4
