@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="50%" stop-color="#2d1b4e"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <line x1="100" y1="1800" x2="500" y2="200" stroke="#333" stroke-width="3"/>
+  <line x1="980" y1="1800" x2="580" y2="200" stroke="#333" stroke-width="3"/>
+  <rect x="200" y="1600" width="680" height="40" rx="5" fill="#252540" stroke="#444" stroke-width="1"/>
+  <rect x="250" y="1400" width="580" height="40" rx="5" fill="#252540" stroke="#444" stroke-width="1"/>
+  <rect x="300" y="1200" width="480" height="40" rx="5" fill="#252540" stroke="#444" stroke-width="1"/>
+  <rect x="340" y="1000" width="400" height="40" rx="5" fill="#252540" stroke="#444" stroke-width="1"/>
+  <rect x="370" y="800" width="340" height="40" rx="5" fill="#252540" stroke="#444" stroke-width="1"/>
+  <circle cx="540" cy="300" r="60" fill="#4a1942" opacity="0.4"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">TOWER STAIRS</text>
+</svg>

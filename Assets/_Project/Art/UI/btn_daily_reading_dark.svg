@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="80" viewBox="0 0 400 80">
+  <defs>
+    <linearGradient id="btn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d1b4e"/>
+      <stop offset="100%" stop-color="#1a0a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="80" rx="12" fill="url(#btn)" stroke="#8844cc" stroke-width="2"/>
+  <text x="200" y="48" text-anchor="middle" fill="#ddccff" font-size="24" font-family="sans-serif">Daily Reading</text>
+</svg>

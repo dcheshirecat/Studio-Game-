@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#050010"/>
+      <stop offset="50%" stop-color="#0d0520"/>
+      <stop offset="100%" stop-color="#000005"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <line x1="100" y1="1800" x2="500" y2="200" stroke="#1a1a30" stroke-width="3"/>
+  <line x1="980" y1="1800" x2="580" y2="200" stroke="#1a1a30" stroke-width="3"/>
+  <circle cx="540" cy="400" r="80" fill="#1a0a3e" opacity="0.3"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">TOWER STAIRS - NIGHT</text>
+</svg>

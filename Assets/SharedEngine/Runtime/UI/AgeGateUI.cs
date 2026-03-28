@@ -20,10 +20,8 @@ namespace EndlessBeloved.UI
 
         private void Start()
         {
-            // Auto-wire by finding named objects in the scene
             AutoWire();
 
-            // Skip if already verified
             if (PlayerPrefs.GetInt(AGE_VERIFIED_KEY, 0) == 1)
             {
                 OnConfirmed();
@@ -49,6 +47,8 @@ namespace EndlessBeloved.UI
             }
 
             if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmed);
+            else Debug.LogWarning("AgeGateUI: ConfirmButton not found - scene may need regeneration");
+
             if (denyButton != null) denyButton.onClick.AddListener(OnDenied);
         }
 

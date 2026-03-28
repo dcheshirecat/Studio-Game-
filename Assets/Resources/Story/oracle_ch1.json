@@ -1,424 +1,63 @@
 {
-  "prologue_01": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "You wake slowly. Not all at once -- in pieces. First the weight of your body. Then the sound of wind through leaves.",
-    "portrait": "neutral",
-    "music": "healing_ambient",
-    "next": "prologue_02"
-  },
-  "prologue_02": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "There is grass beneath your palms. Soft earth. Somewhere nearby, water moves over stones.",
-    "background": "sanctuary_garden",
-    "next": "prologue_03"
-  },
-  "prologue_03": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "Your chest is tight. An old tightness, the kind you've carried so long it feels like part of your ribs. But here, for a moment, it loosens.",
-    "next": "prologue_04"
-  },
-  "prologue_04": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "In your hand -- warm, impossibly warm -- a deck of cards. They pulse like a second heartbeat.",
-    "sfx": "card_shuffle",
-    "next": "prologue_05"
-  },
-  "prologue_05": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "You know your name. You just haven't said it out loud in a while. The cards are waiting for you to remember how.",
-    "next": "prologue_end"
-  },
-  "prologue_end": {
-    "type": "end",
-    "next_scene": "CharacterSetup"
-  },
-
-  "oracle_ch1_01": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "The garden leads to a stone building covered in ivy. The door is open. Inside, soft light and the smell of herbs.",
-    "background": "sanctuary_entrance",
-    "music": "oracle_heal_theme",
-    "next": "oracle_ch1_02"
-  },
-  "oracle_ch1_02": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "Someone is already inside, sitting at a table covered in cards, crystals, and dried flowers. They look up when you enter.",
-    "next": "oracle_ch1_03"
-  },
-  "oracle_ch1_03": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "Oh. There you are. I had a feeling someone was coming today. The chamomile brewed itself twice this morning.",
-    "background": "oracle_sanctuary",
-    "next": "oracle_ch1_04"
-  },
-  "oracle_ch1_04": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "Please, sit. You look like you've been carrying a lot. You don't have to put it down all at once -- just set one piece on the table.",
-    "next": "oracle_ch1_choice_01"
-  },
-  "oracle_ch1_choice_01": {
-    "type": "choice",
-    "text": "How do you want to respond?",
-    "choices": [
-      {
-        "text": "I don't know where I am.",
-        "next": "oracle_ch1_lost_01",
-        "affinity": { "oracle": 2 }
-      },
-      {
-        "text": "How did you know I was coming?",
-        "next": "oracle_ch1_curious_01",
-        "affinity": { "oracle": 4 }
-      },
-      {
-        "text": "I'm... tired. I'm really tired.",
-        "next": "oracle_ch1_tired_01",
-        "affinity": { "oracle": 5 },
-        "effects": [
-          { "type": "set_flag", "target": "expressed_exhaustion", "value": "true" }
+    "start": {
+        "type": "line",
+        "speaker": "narrator",
+        "text": "You wake slowly. Not all at once -- in pieces. The tightness in your chest loosens. Just a little. But enough.",
+        "background": "sanctuary_garden",
+        "next": "start_2"
+    },
+    "start_2": {
+        "type": "line",
+        "speaker": "narrator",
+        "text": "Morning light filters through the leaves above. The sanctuary garden stretches around you, familiar now.",
+        "next": "start_3"
+    },
+    "start_3": {
+        "type": "line",
+        "speaker": "oracle",
+        "portrait": "neutral",
+        "text": "{name}. You came back. I wondered if you would.",
+        "next": "start_4"
+    },
+    "start_4": {
+        "type": "line",
+        "speaker": "oracle",
+        "text": "The cards have been restless this morning. They sense something shifting in you.",
+        "next": "choice_1"
+    },
+    "choice_1": {
+        "type": "choice",
+        "text": "",
+        "choices": [
+            {"text": "\"What do they see?\"", "next": "ask_vision", "affinity": {"oracle": 5}},
+            {"text": "\"I'm not ready for revelations today.\"", "next": "ask_rest"},
+            {"text": "\"Tell me about the Fool's journey.\"", "next": "ask_fool", "affinity": {"oracle": 3}}
         ]
-      },
-      {
-        "text": "Stay quiet. Sit down.",
-        "next": "oracle_ch1_quiet_01",
-        "affinity": { "oracle": 3 }
-      }
-    ]
-  },
-  "oracle_ch1_lost_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "Somewhere safe. That's the short answer, and it's the true one.",
-    "next": "oracle_ch1_lost_02"
-  },
-  "oracle_ch1_lost_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "This is a sanctuary. People find it when they need to. I don't make the rules -- the garden does.",
-    "next": "oracle_ch1_converge_01"
-  },
-  "oracle_ch1_curious_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "The cards told me. Not in words -- more like a feeling. Like when you know it's going to rain before the sky changes.",
-    "next": "oracle_ch1_curious_02"
-  },
-  "oracle_ch1_curious_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "I've learned to trust those feelings. They've never steered me wrong about people.",
-    "effects": [
-      { "type": "set_flag", "target": "asked_oracle_about_knowing", "value": "true" }
-    ],
-    "next": "oracle_ch1_converge_01"
-  },
-  "oracle_ch1_tired_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "sad",
-    "text": "{oracle} pauses. Looks at you -- really looks. Not through you, not past you. At you.",
-    "next": "oracle_ch1_tired_02"
-  },
-  "oracle_ch1_tired_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "loving",
-    "text": "I know. I can see it. That kind of tired that sleep doesn't fix.",
-    "next": "oracle_ch1_tired_03"
-  },
-  "oracle_ch1_tired_03": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "You don't have to explain it. Not today. Today you just need to be here.",
-    "effects": [
-      { "type": "set_flag", "target": "skill_unlock_grounding", "value": "true" }
-    ],
-    "next": "oracle_ch1_skill_unlock_01"
-  },
-  "oracle_ch1_skill_unlock_01": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "[Skill Unlocked: Grounding]\nWhen everything feels overwhelming, bring your attention to five things you can see, four you can touch, three you can hear, two you can smell, one you can taste. You are here. You are present.",
-    "sfx": "skill_unlock",
-    "next": "oracle_ch1_converge_01"
-  },
-  "oracle_ch1_quiet_01": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "You say nothing. You sit. The chair is sturdy and worn -- it has held many people before you.",
-    "next": "oracle_ch1_quiet_02"
-  },
-  "oracle_ch1_quiet_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "{oracle} smiles. Not a big smile -- just enough. They slide a cup of tea toward you without being asked.",
-    "next": "oracle_ch1_quiet_03"
-  },
-  "oracle_ch1_quiet_03": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "Sometimes the bravest thing is just being somewhere. You're doing fine.",
-    "next": "oracle_ch1_converge_01"
-  },
-
-  "oracle_ch1_converge_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "{oracle} notices the deck in your hand. Their eyes widen slightly.",
-    "next": "oracle_ch1_converge_02"
-  },
-  "oracle_ch1_converge_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "You have a deck. A real one -- not bought, not borrowed. Given. Decks like that are rare.",
-    "next": "oracle_ch1_converge_03"
-  },
-  "oracle_ch1_converge_03": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "May I? Let's draw one card together. Just to see where you are. Not where you're going -- where you are right now.",
-    "next": "oracle_ch1_first_draw"
-  },
-  "oracle_ch1_first_draw": {
-    "type": "card_draw",
-    "card_draw_type": "random",
-    "speaker": "narrator",
-    "text": "You place the deck on the table between you. The top card seems to glow faintly in the warm light.",
-    "sfx": "card_draw",
-    "next": "oracle_ch1_post_draw_01"
-  },
-  "oracle_ch1_post_draw_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "Hmm. That's an honest card. It doesn't flatter. But it doesn't lie, either.",
-    "next": "oracle_ch1_post_draw_02"
-  },
-  "oracle_ch1_post_draw_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "The cards aren't fortune-telling. They're mirrors. They show you what you already know but haven't looked at yet.",
-    "next": "oracle_ch1_choice_02"
-  },
-  "oracle_ch1_choice_02": {
-    "type": "choice",
-    "choices": [
-      {
-        "text": "That feels true.",
-        "next": "oracle_ch1_accept_01",
-        "affinity": { "oracle": 4 }
-      },
-      {
-        "text": "I'm not sure I want to look.",
-        "next": "oracle_ch1_fear_01",
-        "affinity": { "oracle": 5 },
+    },
+    "ask_vision": {
+        "type": "line",
+        "speaker": "oracle",
+        "text": "They see... a path that splits. Multiple roads, each leading somewhere you cannot yet imagine.",
+        "next": "end_chapter"
+    },
+    "ask_rest": {
+        "type": "line",
+        "speaker": "oracle",
+        "text": "Then we will sit with the silence today. Sometimes the cards speak loudest when we are still.",
+        "next": "end_chapter"
+    },
+    "ask_fool": {
+        "type": "line",
+        "speaker": "oracle",
+        "text": "The Fool walks forward without knowing what lies ahead. Scared. Hopeful. Both at once. Like you.",
+        "next": "end_chapter"
+    },
+    "end_chapter": {
+        "type": "end",
+        "next_scene": "AltarHome",
         "effects": [
-          { "type": "set_flag", "target": "expressed_fear_of_self", "value": "true" }
+            {"type": "set_flag", "target": "chapter1_complete", "value": "true"},
+            {"type": "change_affinity", "target": "oracle", "value": "2"}
         ]
-      },
-      {
-        "text": "Can I learn to read them?",
-        "next": "oracle_ch1_learn_01",
-        "affinity": { "oracle": 6 }
-      }
-    ]
-  },
-  "oracle_ch1_accept_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "Good. Trust that feeling. It's yours -- nobody can take it from you.",
-    "next": "oracle_ch1_evening_01"
-  },
-  "oracle_ch1_fear_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "That's okay. You don't have to. The cards are patient. They'll wait until you're ready.",
-    "next": "oracle_ch1_fear_02"
-  },
-  "oracle_ch1_fear_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "loving",
-    "text": "And so will I.",
-    "effects": [
-      { "type": "set_flag", "target": "skill_unlock_window_tolerance", "value": "true" }
-    ],
-    "next": "oracle_ch1_skill_02"
-  },
-  "oracle_ch1_skill_02": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "[Skill Unlocked: Window of Tolerance]\nYour window of tolerance is the zone where you can function and process things. When you're outside it, you're either in hyperarousal (panic, anger) or hypoarousal (numbness, shutdown). Learning to notice which zone you're in is the first step to getting back inside the window.",
-    "sfx": "skill_unlock",
-    "next": "oracle_ch1_evening_01"
-  },
-  "oracle_ch1_learn_01": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "Yes. I'd like that very much, actually. It's been a while since I had someone to teach.",
-    "next": "oracle_ch1_learn_02"
-  },
-  "oracle_ch1_learn_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "We'll start small. One card a day. No pressure, no tests. Just... listening.",
-    "next": "oracle_ch1_evening_01"
-  },
-
-  "oracle_ch1_evening_01": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "The light in the sanctuary shifts. Golden hour. The kind of light that makes everything look like a painting.",
-    "background": "sanctuary_evening",
-    "music": "evening_gentle",
-    "next": "oracle_ch1_evening_02"
-  },
-  "oracle_ch1_evening_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "There's a room for you here. Clean sheets, a window that opens onto the garden. It's yours for as long as you need it.",
-    "next": "oracle_ch1_evening_03"
-  },
-  "oracle_ch1_evening_03": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "thoughtful",
-    "text": "Tomorrow we'll explore more of this place. There are others here too. Good people. You'll meet them when you're ready.",
-    "next": "oracle_ch1_final_choice"
-  },
-  "oracle_ch1_final_choice": {
-    "type": "choice",
-    "choices": [
-      {
-        "text": "Thank you. This means more than you know.",
-        "next": "oracle_ch1_end_grateful",
-        "affinity": { "oracle": 4 }
-      },
-      {
-        "text": "Is it always this... gentle here?",
-        "next": "oracle_ch1_end_gentle",
-        "affinity": { "oracle": 3 },
-        "effects": [
-          { "type": "set_flag", "target": "unfamiliar_with_safety", "value": "true" }
-        ]
-      },
-      {
-        "text": "I don't want to be alone tonight.",
-        "next": "oracle_ch1_end_stay",
-        "affinity": { "oracle": 8 },
-        "required_affinity_char": "oracle",
-        "required_affinity": 5
-      }
-    ]
-  },
-  "oracle_ch1_end_grateful": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "happy",
-    "text": "{oracle} reaches across the table and squeezes your hand. Brief, warm, intentional.",
-    "next": "oracle_ch1_end_grateful_02"
-  },
-  "oracle_ch1_end_grateful_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "loving",
-    "text": "You don't need to thank me. You found this place because you were brave enough to need it. That's all you.",
-    "next": "oracle_ch1_end_shared"
-  },
-  "oracle_ch1_end_gentle": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "sad",
-    "text": "{oracle} pauses. Something flickers behind their eyes -- recognition. Like they understand exactly what you're asking.",
-    "next": "oracle_ch1_end_gentle_02"
-  },
-  "oracle_ch1_end_gentle_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "neutral",
-    "text": "Not always. But today, yes. And I promise you -- the days that aren't gentle, you won't face them alone.",
-    "effects": [
-      { "type": "set_flag", "target": "skill_unlock_safety_anchor", "value": "true" }
-    ],
-    "next": "oracle_ch1_skill_03"
-  },
-  "oracle_ch1_skill_03": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "[Skill Unlocked: Safety Anchoring]\nA safety anchor is a person, place, or object that helps you feel safe. When you're overwhelmed, bring your anchor to mind: picture it clearly, remember what it feels like, how it sounds. Your nervous system can learn to calm down when you connect with your anchor.",
-    "sfx": "skill_unlock",
-    "next": "oracle_ch1_end_shared"
-  },
-  "oracle_ch1_end_stay": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "surprised",
-    "text": "{oracle} looks at you for a long moment. Not with pity. Not with judgement. With understanding.",
-    "next": "oracle_ch1_end_stay_02"
-  },
-  "oracle_ch1_end_stay_02": {
-    "type": "line",
-    "speaker": "oracle",
-    "portrait": "loving",
-    "text": "Then you won't be. I'll stay up, read by the fire. You can sleep right here. The couch is comfortable -- I should know, I fall asleep on it most nights.",
-    "effects": [
-      { "type": "set_flag", "target": "stayed_with_oracle_ch1", "value": "true" }
-    ],
-    "next": "oracle_ch1_end_stay_03"
-  },
-  "oracle_ch1_end_stay_03": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "You curl up on the couch. The fire crackles. {oracle} reads quietly nearby. For the first time in longer than you can remember, the tightness in your chest eases. Just a little. But enough.",
-    "next": "oracle_ch1_end_shared"
-  },
-
-  "oracle_ch1_end_shared": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "Sleep comes. Softly, without violence. No nightmares tonight -- just darkness, warm and quiet, and the distant sound of pages turning.",
-    "background": "sanctuary_night",
-    "next": "oracle_ch1_end_final"
-  },
-  "oracle_ch1_end_final": {
-    "type": "line",
-    "speaker": "narrator",
-    "text": "In your hand, the deck rests. One card has risen to the top, face-down. It can wait until morning.",
-    "sfx": "card_shuffle",
-    "effects": [
-      { "type": "set_flag", "target": "oracle_ch1_complete", "value": "true" }
-    ],
-    "next": "oracle_ch1_end"
-  },
-  "oracle_ch1_end": {
-    "type": "end",
-    "next_scene": "AltarHome"
-  }
+    }
 }

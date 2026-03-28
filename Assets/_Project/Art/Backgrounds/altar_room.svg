@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="50%" stop-color="#2d1040"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <rect x="240" y="900" width="600" height="400" rx="10" fill="#1a1a2e" stroke="#6a3090" stroke-width="2"/>
+  <circle cx="540" cy="850" r="60" fill="#ff8800" opacity="0.2"/>
+  <rect x="440" y="950" width="200" height="20" rx="5" fill="#3a2060"/>
+  <circle cx="380" cy="1000" r="15" fill="#8844cc" opacity="0.5"/>
+  <circle cx="700" cy="1000" r="15" fill="#8844cc" opacity="0.5"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">ALTAR ROOM</text>
+</svg>

@@ -207,10 +207,6 @@ namespace EndlessBeloved.Editor
             var icons = new Texture2D[] { icon };
             PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Android, icons);
 
-            // Set adaptive icon (Android 8+)
-            var platform = UnityEditor.Android.AndroidPlatformIconKind.Adaptive;
-            var iconKinds = PlayerSettings.GetSupportedIconKindsForPlatform(BuildTargetGroup.Android);
-
             Debug.Log($"Applied {variant} icons from {dir}");
         }
     }

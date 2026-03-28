@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="50%" stop-color="#3d1b6e"/>
+      <stop offset="100%" stop-color="#1a0a2e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="540" cy="800" r="200" fill="#2a1050" opacity="0.5"/>
+  <circle cx="540" cy="800" r="100" fill="#4a1080" opacity="0.3"/>
+  <rect x="340" y="750" width="400" height="200" rx="10" fill="#1a1a2e" stroke="#6a3090" stroke-width="2"/>
+  <circle cx="300" cy="600" r="30" fill="#ff8800" opacity="0.3"/>
+  <circle cx="780" cy="600" r="30" fill="#ff8800" opacity="0.3"/>
+  <circle cx="540" cy="500" r="25" fill="#ff8800" opacity="0.25"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">ORACLE CHAMBER</text>
+</svg>

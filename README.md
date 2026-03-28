@@ -1,71 +1,186 @@
-# Endless, Beloved: Heal
+# Endless, Beloved
 
-> *"You wake slowly. Not all at once -- in pieces. The tightness in your chest loosens. Just a little. But enough."*
+> *"You wake slowly. Not all at once -- in pieces."*
 
-A therapeutic 18+ romance visual novel for Android. Six healing routes. CBT/DBT skill system. Built for survivors.
+A branching narrative visual novel framework for Android with tarot mechanics, romance routes, and (in the Heal version) therapeutic skill systems.
 
-## What Makes This Different
+## Two Apps, One Engine
 
-The protagonist lives with C-PTSD. This is woven into the story naturally, not clinically. As you play, you unlock real CBT and DBT skills through story moments and choices. Each skill is logged like an achievement with:
+| App | Bundle ID | Theme | Therapeutic Skills |
+|-----|-----------|-------|-------------------|
+| **Endless, Beloved: Heal** | `com.endlessbeloved.heal` | Warm sanctuary | CBT/DBT skills unlocked through story |
+| **Endless, Beloved** | `com.endlessbeloved.dark` | Dark fantasy | N/A |
 
-- **In-game description**: how your character learned it
-- **Real-life description**: how you, the player, can use it
-- **Quick tip**: a short, actionable summary
+---
 
-The skill log is always accessible -- a real, usable mental health reference you build over time.
+## Building the APK
+
+### 1. Open in Unity
+- Unity 2022.3 LTS or newer
+- Import/open the project
+- Wait for package resolution to complete
+
+### 2. First Time Setup
+In Unity Editor, run:
+```
+Endless Beloved > First Time Setup
+```
+This creates folders, placeholder assets, and generates all scenes.
+
+### 3. Build
+```
+Endless Beloved > Build Heal APK    # Therapeutic version
+Endless Beloved > Build Dark APK    # Fantasy version
+```
+
+Output: `build/Android/EndlessBelovedHeal.apk` or `EndlessBelovedDark.apk`
+
+---
 
 ## Project Structure
 
-Same shared engine as the main Endless, Beloved game, with therapeutic-specific additions:
-
 ```
 Assets/
-  SharedEngine/                    -- Shared codebase with dark fantasy version
-    Runtime/
-      Therapeutic/
-        SkillData.cs               -- ScriptableObject for CBT/DBT skills
-        SkillSystem.cs             -- Skill unlock manager
-        SkillLogUI.cs              -- Achievement-style skill log UI
-  _Project/
-    Content/
-      Story/Oracle/oracle_ch1.json -- Therapeutic Oracle route
-    Scripts/
-      GameBootstrap.cs             -- Entry point
-    Art/                           -- Warm/nature themed visuals
-    Audio/                         -- Healing ambient music
+├── SharedEngine/
+│   └── Runtime/
+│       ├── Core/           # GameState, SaveSystem, SceneFlow, Audio
+│       ├── Dialogue/       # DialogueRunner, Parser, JSON format
+│       ├── UI/             # All UI components (AutoWire by name)
+│       ├── Characters/     # CharacterData, CharacterDatabase
+│       ├── Tarot/          # TarotDeck, CardData
+│       ├── Altar/          # AltarManager, SpellData
+│       ├── Therapeutic/    # SkillSystem, SkillData (Heal only)
+│       ├── Avatar/         # AvatarCustomization
+│       └── Minigames/      # CardMemoryGame, MinigameBase
+├── _Project/
+│   ├── Editor/             # SceneGenerator, IconGenerator, BuildScript
+│   ├── Scenes/            # Game scenes (auto-generated)
+│   ├── Data/               # ScriptableObject data
+│   └── generate_placeholders.py  # SVG asset generator
+└── Resources/
+    ├── Story/              # Chapter JSON files
+    ├── Backgrounds/        # Background images (1080x1920)
+    ├── Characters/          # Character portraits
+    ├── Audio/Music/        # BGM tracks
+    ├── Audio/SFX/           # Sound effects
+    └── Tarot/               # Card images
 ```
 
-## Therapeutic Skills
+---
 
-Skills are organized by therapy type:
+## Story Content Format
 
-### CBT (Cognitive Behavioral Therapy)
-- Cognitive Restructuring
-- Behavioral Activation
-- Exposure Therapy
-- Problem Solving
+Story chapters use JSON with node-based dialogue:
 
-### DBT (Dialectical Behavior Therapy)
-- Mindfulness
-- Distress Tolerance
-- Emotion Regulation
-- Interpersonal Effectiveness
+```json
+{
+    "prologue_01": {
+        "type": "line",
+        "speaker": "narrator",
+        "text": "You wake slowly. Not all at once.",
+        "background": "sanctuary_garden",
+        "next": "prologue_02"
+    },
+    "prologue_02": {
+        "type": "choice",
+        "text": "What do you do?",
+        "choices": [
+            {
+                "text": "Look around",
+                "next": "look_around",
+                "affinity": {"oracle": 5}
+            },
+            {
+                "text": "Stay still",
+                "next": "stay_still"
+            }
+        ]
+    },
+    "chapter_end": {
+        "type": "end",
+        "next_scene": "AltarHome",
+        "effects": [
+            {"type": "set_flag", "target": "prologue_done", "value": "true"},
+            {"type": "change_affinity", "target": "oracle", "value": "2"}
+        ]
+    }
+}
+```
+
+### Node Types
+- `line` - Display dialogue
+- `choice` - Present choices (with optional affinity changes)
+- `end` - End chapter, load next scene
+- `card_draw` - Trigger tarot draw
+- `minigame` - Trigger minigame
+- `branch` - Conditional routing
+
+---
+
+## Therapeutic Skills (Heal version only)
+
+Skills unlock through story flags and display as achievements:
+
+| CBT Skills | DBT Skills |
+|------------|------------|
+| Cognitive Restructuring | Mindfulness |
+| Behavioral Activation | Distress Tolerance |
+| Exposure Therapy | Emotion Regulation |
+| Problem Solving | Interpersonal Effectiveness |
+
+Each skill includes:
+- In-game description (how character learned it)
+- Real-life description (how player can use it)
+- Quick tip for immediate use
+
+---
 
 ## Character Routes
 
 | Archetype | Tagline | Status |
 |-----------|---------|--------|
-| The Oracle | Foresight & fate | Available (Ch1 complete) |
-| The Angel | Grace & ruin | Available (placeholder) |
-| The Keeper | Memory & loss | Available (placeholder) |
+| The Oracle | Foresight & fate | Available |
+| The Angel | Grace & ruin | Available |
+| The Keeper | Memory & loss | Available |
 | The Wanderer | Freedom & longing | Unlocks over time |
 | The Apprentice | Power & becoming | Unlocks over time |
 | The Weaver | Threads & endings | Unlocks over time |
 
-## Getting Started
+---
 
-Same setup as the main game -- see the shared README for Unity setup instructions.
+## Creating Content
+
+### Add a Character
+1. Right-click `Assets/_Project/Data/Characters`
+2. Create > Endless Beloved > Character Data
+3. Fill in name variants, bio, personality traits
+4. Add to CharacterDatabase asset
+
+### Add Tarot Cards
+1. Right-click `Assets/_Project/Data/Cards`
+2. Create > Endless Beloved > Card Data
+3. Fill in card name, upright/reversed meanings
+4. Add to TarotDeck ScriptableObject
+
+### Add Story Chapter
+1. Create JSON in `Assets/Resources/Story/`
+2. Naming: `{route}_ch{n}.json` (e.g., `oracle_ch1.json`)
+3. Follow dialogue format above
+
+### Generate Placeholder Art
+```bash
+cd Assets/_Project
+python generate_placeholders.py
+```
+Creates SVG placeholders for backgrounds, characters, cards, and UI.
+
+---
 
 ## Content Warning
 
-This game contains explicit adult content, themes of trauma and recovery, and depictions of C-PTSD symptoms. While the therapeutic content is designed to be helpful, this game is not a substitute for professional mental health support. If you are in crisis, please contact a mental health professional or crisis line.
+Both apps contain:
+- Adult romance themes
+- Mental health themes (Heal version)
+- References to trauma and recovery
+
+Intended for ages 18+. If in crisis, contact a mental health professional.
