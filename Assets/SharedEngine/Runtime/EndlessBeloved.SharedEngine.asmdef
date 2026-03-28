@@ -1,7 +1,9 @@
 {
     "name": "EndlessBeloved.SharedEngine",
     "rootNamespace": "EndlessBeloved",
-    "references": [],
+    "references": [
+        "Unity.TextMeshPro"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

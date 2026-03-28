@@ -3,7 +3,8 @@
     "rootNamespace": "EndlessBeloved.Editor",
     "references": [
         "EndlessBeloved.SharedEngine",
-        "EndlessBeloved.Project"
+        "EndlessBeloved.Project",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
