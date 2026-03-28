@@ -34,11 +34,18 @@ namespace EndlessBeloved.UI
 
             if (warningText != null)
             {
+#if DARK_VERSION
                 warningText.text = "This game contains explicit adult content including sexual themes, " +
-                    "mature language, and dark subject matter.\n\n" +
+                    "graphic imagery, mature language, and dark subject matter.\n\n" +
                     "You must be 18 years or older to continue.\n\n" +
                     "By pressing 'I am 18+' you confirm that you are of legal age " +
                     "in your jurisdiction to view adult content.";
+#else
+                warningText.text = "This game explores themes of mental health, trauma recovery, " +
+                    "and emotional healing through a visual novel experience.\n\n" +
+                    "It contains mature themes and is intended for ages 18+.\n\n" +
+                    "By pressing 'I am 18+' you confirm that you are of legal age to continue.";
+#endif
             }
 
             if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmed);
