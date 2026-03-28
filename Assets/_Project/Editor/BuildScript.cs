@@ -81,7 +81,8 @@ namespace EndlessBeloved.Editor
             PlayerSettings.productName = productName;
 
             // Ensure Android target SDK is high enough for modern devices
-            PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)35;
+            // Use AndroidSdkVersions.AndroidApiLevelAuto to let Unity pick the highest available
+            PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevelAuto;
 
             // Set scripting define symbols for this variant
             var currentDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(
