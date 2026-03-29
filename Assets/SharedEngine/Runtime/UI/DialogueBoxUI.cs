@@ -185,14 +185,14 @@ namespace EndlessBeloved.UI
                     textRect.anchorMax = Vector2.one;
                     textRect.offsetMin = new Vector2(10, 5);
                     textRect.offsetMax = new Vector2(-10, -5);
-                    var t = textGo.AddComponent<Text>();
-                    t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                    t.alignment = TextAnchor.MiddleLeft;
+                    var t = textGo.AddComponent<TMP_Text>();
+                    t.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+                    t.alignment = TextAlignmentOptions.Left;
                     t.color = Color.white;
-                    t.fontSize = 20;
+                    t.fontSize = 24;
                 }
 
-                var btnText = go.GetComponentInChildren<Text>();
+                var btnText = go.GetComponentInChildren<TMP_Text>();
                 if (btnText != null) btnText.text = choices[i].text;
 
                 var btn = go.GetComponent<Button>();

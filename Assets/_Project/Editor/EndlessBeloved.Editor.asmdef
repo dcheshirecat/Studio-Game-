@@ -4,6 +4,7 @@
     "references": [
         "EndlessBeloved.SharedEngine",
         "EndlessBeloved.Project",
+        "UnityEngine",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [

@@ -3,6 +3,7 @@
     "rootNamespace": "EndlessBeloved",
     "references": [
         "EndlessBeloved.SharedEngine",
+        "UnityEngine",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

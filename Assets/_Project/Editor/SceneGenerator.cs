@@ -508,7 +508,6 @@ namespace EndlessBeloved.Editor
             t.color = color;
             t.alignment = TextAnchorToTMPAlignment(alignment);
             t.enableWordWrapping = true;
-            t.textWrappingMode = TextWrappingModes.Normal;
             return go;
         }
 
