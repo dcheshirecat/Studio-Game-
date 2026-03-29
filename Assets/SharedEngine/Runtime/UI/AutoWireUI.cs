@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace EndlessBeloved.UI
 {
@@ -38,10 +39,10 @@ namespace EndlessBeloved.UI
             return go != null ? go.GetComponent<Button>() ?? go.GetComponentInChildren<Button>() : null;
         }
 
-        protected Text FindTxt(string name)
+        protected TMP_Text FindTxt(string name)
         {
             var go = Find(name);
-            return go != null ? go.GetComponent<Text>() ?? go.GetComponentInChildren<Text>() : null;
+            return go != null ? go.GetComponent<TMP_Text>() ?? go.GetComponentInChildren<TMP_Text>() : null;
         }
 
         protected Image FindImg(string name)
@@ -50,10 +51,10 @@ namespace EndlessBeloved.UI
             return go != null ? go.GetComponent<Image>() ?? go.GetComponentInChildren<Image>() : null;
         }
 
-        protected InputField FindInput(string name)
+        protected TMP_InputField FindInput(string name)
         {
             var go = Find(name);
-            return go != null ? go.GetComponent<InputField>() ?? go.GetComponentInChildren<InputField>() : null;
+            return go != null ? go.GetComponent<TMP_InputField>() ?? go.GetComponentInChildren<TMP_InputField>() : null;
         }
 
         protected Slider FindSlider(string name)

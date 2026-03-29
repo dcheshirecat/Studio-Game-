@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 using EndlessBeloved.Tarot;
 
@@ -16,9 +17,9 @@ namespace EndlessBeloved.UI
         [SerializeField] private TarotDeck tarotDeck;
         [SerializeField] private Image cardImage;
         [SerializeField] private Image cardBackImage;
-        [SerializeField] private Text cardNameText;
-        [SerializeField] private Text cardMeaningText;
-        [SerializeField] private Text positionText; // "Past", "Present", "Future" for readings
+        [SerializeField] private TMP_Text cardNameText;
+        [SerializeField] private TMP_Text cardMeaningText;
+        [SerializeField] private TMP_Text positionText; // "Past", "Present", "Future" for readings
         [SerializeField] private GameObject drawPanel;
         [SerializeField] private GameObject resultPanel;
         [SerializeField] private Button drawButton;
@@ -32,8 +33,8 @@ namespace EndlessBeloved.UI
         [Header("Reading Mode")]
         [SerializeField] private GameObject readingPanel;
         [SerializeField] private Image[] readingCardImages = new Image[3];
-        [SerializeField] private Text[] readingCardNames = new Text[3];
-        [SerializeField] private Text[] readingPositionLabels = new Text[3];
+        [SerializeField] private TMP_Text[] readingCardNames = new TMP_Text[3];
+        [SerializeField] private TMP_Text[] readingPositionLabels = new TMP_Text[3];
 
         private CardData drawnCard;
         private bool isReversed;

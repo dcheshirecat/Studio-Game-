@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -13,17 +14,15 @@ namespace EndlessBeloved.UI
         private GameObject ageGatePanel;
         private Button confirmButton;
         private Button denyButton;
-        private Text warningText;
+        private TMP_Text warningText;
         private string nextScene = "TitleScreen";
 
         private const string AGE_VERIFIED_KEY = "age_verified";
 
         private void Start()
         {
-            // Auto-wire by finding named objects in the scene
             AutoWire();
 
-            // Skip if already verified
             if (PlayerPrefs.GetInt(AGE_VERIFIED_KEY, 0) == 1)
             {
                 OnConfirmed();
@@ -34,14 +33,23 @@ namespace EndlessBeloved.UI
 
             if (warningText != null)
             {
+#if DARK_VERSION
                 warningText.text = "This game contains explicit adult content including sexual themes, " +
-                    "mature language, and dark subject matter.\n\n" +
+                    "graphic imagery, mature language, and dark subject matter.\n\n" +
                     "You must be 18 years or older to continue.\n\n" +
                     "By pressing 'I am 18+' you confirm that you are of legal age " +
                     "in your jurisdiction to view adult content.";
+#else
+                warningText.text = "This game explores themes of mental health, trauma recovery, " +
+                    "and emotional healing through a visual novel experience.\n\n" +
+                    "It contains mature themes and is intended for ages 18+.\n\n" +
+                    "By pressing 'I am 18+' you confirm that you are of legal age to continue.";
+#endif
             }
 
             if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmed);
+            else Debug.LogWarning("AgeGateUI: ConfirmButton not found - scene may need regeneration");
+
             if (denyButton != null) denyButton.onClick.AddListener(OnDenied);
         }
 
@@ -96,10 +104,10 @@ namespace EndlessBeloved.UI
             return go != null ? go.GetComponent<Button>() : null;
         }
 
-        private Text FindText(string name)
+        private TMP_Text FindText(string name)
         {
             var go = FindInScene(name);
-            return go != null ? go.GetComponent<Text>() : null;
+            return go != null ? go.GetComponent<TMP_Text>() : null;
         }
     }
 }

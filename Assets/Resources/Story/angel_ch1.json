@@ -1,0 +1,364 @@
+{
+  "angel_ch1_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "The corridor beyond the garden leads upward. Stone steps, worn smooth by countless feet, spiral into light.",
+    "background": "sanctuary_entrance",
+    "music": "angel_heal_theme",
+    "next": "angel_ch1_02"
+  },
+  "angel_ch1_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "At the top, a room open to the sky. No ceiling -- just clouds moving slowly overhead, impossibly close. Wind that smells of rain and old paper.",
+    "next": "angel_ch1_03"
+  },
+  "angel_ch1_03": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Someone stands at the edge, their back to you. They are tall, dressed in white that moves like it has a life of its own. Their shoulders are tense -- coiled, like a spring held too long.",
+    "next": "angel_ch1_04"
+  },
+  "angel_ch1_04": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "You shouldn't be up here. This area is... I keep it private.",
+    "next": "angel_ch1_05"
+  },
+  "angel_ch1_05": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "They turn. Their face is sharp, beautiful in a way that makes your chest ache. There's a scar running from their temple to their jaw, pale and old.",
+    "next": "angel_ch1_choice_01"
+  },
+  "angel_ch1_choice_01": {
+    "type": "choice",
+    "text": "How do you respond?",
+    "choices": [
+      {
+        "text": "I'm sorry. I didn't know. I'll go.",
+        "next": "angel_ch1_leave_01",
+        "affinity": { "angel": 2 }
+      },
+      {
+        "text": "I got lost. The stairs just... kept going.",
+        "next": "angel_ch1_lost_01",
+        "affinity": { "angel": 3 }
+      },
+      {
+        "text": "It's beautiful up here. I can see why you come here.",
+        "next": "angel_ch1_beauty_01",
+        "affinity": { "angel": 5 }
+      },
+      {
+        "text": "You look like you're carrying something heavy too.",
+        "next": "angel_ch1_mirror_01",
+        "affinity": { "angel": 6 },
+        "effects": [
+          { "type": "set_flag", "target": "recognized_angel_pain", "value": "true" }
+        ]
+      }
+    ]
+  },
+  "angel_ch1_leave_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "surprised",
+    "text": "Wait.",
+    "next": "angel_ch1_leave_02"
+  },
+  "angel_ch1_leave_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "...You're the new one. The one the garden let in. I should be more -- I should be more welcoming. I'm told I'm not good at that.",
+    "next": "angel_ch1_converge_01"
+  },
+  "angel_ch1_lost_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "thoughtful",
+    "text": "They do that. The stairs. This place has a way of taking you where you need to go, whether you asked or not.",
+    "next": "angel_ch1_lost_02"
+  },
+  "angel_ch1_lost_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "I used to fight it. Now I just follow.",
+    "next": "angel_ch1_converge_01"
+  },
+  "angel_ch1_beauty_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "surprised",
+    "text": "Something shifts in their expression. The tension in their jaw loosens, just barely.",
+    "next": "angel_ch1_beauty_02"
+  },
+  "angel_ch1_beauty_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "sad",
+    "text": "It is. On clear nights you can see things in the sky that don't have names yet. I come here to remember that the world is bigger than the inside of my head.",
+    "next": "angel_ch1_converge_01"
+  },
+  "angel_ch1_mirror_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "fearful",
+    "text": "They go very still. For a moment you think you've made a terrible mistake.",
+    "next": "angel_ch1_mirror_02"
+  },
+  "angel_ch1_mirror_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "sad",
+    "text": "...You see that? Most people look at me and see someone who has it together. Strong. Put together. They don't look past it.",
+    "next": "angel_ch1_mirror_03"
+  },
+  "angel_ch1_mirror_03": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "You're either very perceptive or very reckless. Either way... thank you. For saying it out loud.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_validation", "value": "true" }
+    ],
+    "next": "angel_ch1_skill_01"
+  },
+  "angel_ch1_skill_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Emotional Validation]\nValidation means acknowledging someone's feelings as real and understandable -- including your own. You don't have to fix it or explain it. 'That makes sense' and 'I hear you' are complete sentences. Validation isn't agreement; it's recognition.",
+    "sfx": "skill_unlock",
+    "next": "angel_ch1_converge_01"
+  },
+
+  "angel_ch1_converge_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "{angel} gestures to a stone bench overlooking the clouds. They sit on one end, leaving space. An invitation, not an insistence.",
+    "next": "angel_ch1_converge_02"
+  },
+  "angel_ch1_converge_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "thoughtful",
+    "text": "I'm not like the others here. The Oracle sees patterns. The Keeper holds memories. I... I used to protect people. That was my purpose.",
+    "next": "angel_ch1_converge_03"
+  },
+  "angel_ch1_converge_03": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "sad",
+    "text": "Then I failed. Badly. And I've been up here since, trying to figure out what I'm for if I can't do the one thing I was made to do.",
+    "next": "angel_ch1_converge_04"
+  },
+  "angel_ch1_converge_04": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "The wind picks up. {angel}'s white clothes ripple. For a moment they look like something out of a story -- radiant and broken at the same time.",
+    "next": "angel_ch1_converge_05"
+  },
+  "angel_ch1_converge_05": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "Sorry. That was -- you just got here. You don't need my baggage on top of your own.",
+    "next": "angel_ch1_choice_02"
+  },
+  "angel_ch1_choice_02": {
+    "type": "choice",
+    "choices": [
+      {
+        "text": "You didn't fail. You're still here.",
+        "next": "angel_ch1_comfort_01",
+        "affinity": { "angel": 6 }
+      },
+      {
+        "text": "I don't mind. Honestly, it helps to hear I'm not the only one struggling.",
+        "next": "angel_ch1_shared_01",
+        "affinity": { "angel": 5 },
+        "effects": [
+          { "type": "set_flag", "target": "expressed_shared_struggle", "value": "true" }
+        ]
+      },
+      {
+        "text": "What happened?",
+        "next": "angel_ch1_ask_01",
+        "affinity": { "angel": 4 }
+      }
+    ]
+  },
+  "angel_ch1_comfort_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "surprised",
+    "text": "{angel} looks at you like you've said something in a language they forgot they knew.",
+    "next": "angel_ch1_comfort_02"
+  },
+  "angel_ch1_comfort_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "loving",
+    "text": "...That's the most terrifying kind of kindness. The kind you can't dismiss because it's simple and true.",
+    "next": "angel_ch1_evening_01"
+  },
+  "angel_ch1_shared_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "thoughtful",
+    "text": "Funny how that works, isn't it? We think we're the only ones drowning, and then we find someone else treading water, and suddenly it's easier to float.",
+    "next": "angel_ch1_shared_02"
+  },
+  "angel_ch1_shared_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "happy",
+    "text": "You might be the first person here who's made me feel less alone. I didn't expect that today.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_connection", "value": "true" }
+    ],
+    "next": "angel_ch1_skill_02"
+  },
+  "angel_ch1_skill_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Social Connection]\nIsolation makes pain louder. Connection doesn't erase it, but it changes the acoustics. Sharing your struggle with even one person who understands can reduce the intensity of distress. You don't have to perform being okay.",
+    "sfx": "skill_unlock",
+    "next": "angel_ch1_evening_01"
+  },
+  "angel_ch1_ask_01": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "fearful",
+    "text": "{angel} is quiet for a long time. The clouds move overhead.",
+    "next": "angel_ch1_ask_02"
+  },
+  "angel_ch1_ask_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "Not today. Not because I don't trust you -- I'm not sure I trust myself to tell it right yet. But... ask me again sometime. When we know each other better.",
+    "next": "angel_ch1_evening_01"
+  },
+
+  "angel_ch1_evening_01": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "The sky begins to change. Deep violet bleeding into gold. Stars appearing one at a time, like someone lighting candles across an enormous ceiling.",
+    "background": "sanctuary_evening",
+    "music": "evening_gentle",
+    "next": "angel_ch1_evening_02"
+  },
+  "angel_ch1_evening_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "neutral",
+    "text": "You should go back down before it gets dark. The stairs are less cooperative at night.",
+    "next": "angel_ch1_evening_03"
+  },
+  "angel_ch1_evening_03": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "thoughtful",
+    "text": "{name}... come back tomorrow, if you want. I'll be here. I'm always here.",
+    "next": "angel_ch1_final_choice"
+  },
+  "angel_ch1_final_choice": {
+    "type": "choice",
+    "choices": [
+      {
+        "text": "I will. Goodnight.",
+        "next": "angel_ch1_end_promise",
+        "affinity": { "angel": 4 }
+      },
+      {
+        "text": "You shouldn't always be alone up here.",
+        "next": "angel_ch1_end_concern",
+        "affinity": { "angel": 6 },
+        "effects": [
+          { "type": "set_flag", "target": "worried_about_angel", "value": "true" }
+        ]
+      },
+      {
+        "text": "Can we stay and watch the stars? Just for a little longer?",
+        "next": "angel_ch1_end_stars",
+        "affinity": { "angel": 8 },
+        "required_affinity_char": "angel",
+        "required_affinity": 5
+      }
+    ]
+  },
+  "angel_ch1_end_promise": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "happy",
+    "text": "{angel} nods. Just once. But there's something in that nod that feels like a bridge being built.",
+    "next": "angel_ch1_end_shared"
+  },
+  "angel_ch1_end_concern": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "surprised",
+    "text": "{angel} opens their mouth. Closes it. Opens it again.",
+    "next": "angel_ch1_end_concern_02"
+  },
+  "angel_ch1_end_concern_02": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "sad",
+    "text": "You're right. I know you're right. It's just... being alone is easier when you've decided you deserve it.",
+    "effects": [
+      { "type": "set_flag", "target": "skill_unlock_cognitive_distortion", "value": "true" }
+    ],
+    "next": "angel_ch1_skill_03"
+  },
+  "angel_ch1_skill_03": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "[Skill Unlocked: Recognizing Cognitive Distortions]\n'I deserve to be alone' is a thought, not a fact. Cognitive distortions are patterns of thinking that feel true but aren't supported by evidence. Common ones: all-or-nothing thinking, mind reading, personalizing. Noticing the pattern is the first step to loosening its grip.",
+    "sfx": "skill_unlock",
+    "next": "angel_ch1_end_shared"
+  },
+  "angel_ch1_end_stars": {
+    "type": "line",
+    "speaker": "angel",
+    "portrait": "loving",
+    "text": "{angel} doesn't say anything. They just... make room on the bench. Move a little closer. Not touching, but close enough to feel warmth.",
+    "next": "angel_ch1_end_stars_02"
+  },
+  "angel_ch1_end_stars_02": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "You watch the sky together in silence. It's not awkward. It's not loaded. It's just two people who understand that some things don't need words.",
+    "effects": [
+      { "type": "set_flag", "target": "stargazed_with_angel", "value": "true" }
+    ],
+    "next": "angel_ch1_end_shared"
+  },
+
+  "angel_ch1_end_shared": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Later, back in the warmth of the sanctuary, you lie in the dark and think about the sky. About the scar. About the way someone can look so strong and so fragile at the same time.",
+    "background": "sanctuary_night",
+    "next": "angel_ch1_end_final"
+  },
+  "angel_ch1_end_final": {
+    "type": "line",
+    "speaker": "narrator",
+    "text": "Your deck pulses softly against your chest. One card feels warmer than the others -- like it's trying to speak. But sleep is already pulling you under, gentle as a tide.",
+    "sfx": "card_shuffle",
+    "effects": [
+      { "type": "set_flag", "target": "angel_ch1_complete", "value": "true" }
+    ],
+    "next": "angel_ch1_end"
+  },
+  "angel_ch1_end": {
+    "type": "end",
+    "next_scene": "AltarHome"
+  }
+}

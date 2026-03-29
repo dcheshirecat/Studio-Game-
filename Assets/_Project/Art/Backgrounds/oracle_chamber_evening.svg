@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d0520"/>
+      <stop offset="50%" stop-color="#1a0a2e"/>
+      <stop offset="100%" stop-color="#050010"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bg)"/>
+  <circle cx="540" cy="800" r="200" fill="#1a0840" opacity="0.5"/>
+  <rect x="340" y="750" width="400" height="200" rx="10" fill="#0d0d1e" stroke="#4a2070" stroke-width="2"/>
+  <circle cx="300" cy="600" r="25" fill="#ff6600" opacity="0.2"/>
+  <circle cx="780" cy="600" r="25" fill="#ff6600" opacity="0.2"/>
+  <text x="540" y="1860" text-anchor="middle" fill="#666" font-size="20" font-family="sans-serif">ORACLE CHAMBER - EVENING</text>
+</svg>

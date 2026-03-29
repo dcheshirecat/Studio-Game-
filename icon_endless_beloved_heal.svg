@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bgHeal" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#fdf4e3"/>
+      <stop offset="55%" stop-color="#f5e6c8"/>
+      <stop offset="100%" stop-color="#e8d0a0"/>
+    </radialGradient>
+    <radialGradient id="centerBloom" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e87a50"/>
+      <stop offset="60%" stop-color="#c85f35"/>
+      <stop offset="100%" stop-color="#a04020"/>
+    </radialGradient>
+    <radialGradient id="petalGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f0a070"/>
+      <stop offset="100%" stop-color="#c86040"/>
+    </radialGradient>
+    <radialGradient id="leafGrad" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#8ab87a"/>
+      <stop offset="100%" stop-color="#4a7a3a"/>
+    </radialGradient>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="gentleGlow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- Background with watercolor-esque warm wash -->
+  <rect width="1024" height="1024" rx="180" fill="url(#bgHeal)"/>
+  <clipPath id="clipHeal"><rect width="1024" height="1024" rx="180"/></clipPath>
+  <g clip-path="url(#clipHeal)">
+
+    <!-- Watercolor wash overlays for texture -->
+    <ellipse cx="300" cy="250" rx="280" ry="200" fill="#e8c890" opacity="0.3" filter="url(#watercolor)"/>
+    <ellipse cx="720" cy="700" rx="250" ry="210" fill="#d4a870" opacity="0.2" filter="url(#watercolor)"/>
+    <ellipse cx="512" cy="512" rx="350" ry="320" fill="#f0d090" opacity="0.15"/>
+
+    <!-- Subtle warm border -->
+    <rect x="40" y="40" width="944" height="944" rx="155" fill="none" stroke="#c89050" stroke-width="2.5" opacity="0.5"/>
+    <rect x="54" y="54" width="916" height="916" rx="143" fill="none" stroke="#a06830" stroke-width="1.2" opacity="0.3"/>
+
+    <!-- Corner botanical flourishes - top left -->
+    <!-- Branch -->
+    <path d="M 80 200 Q 130 160 160 100" fill="none" stroke="#4a7a3a" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 120 170 Q 150 155 165 130" fill="none" stroke="#4a7a3a" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+    <!-- Leaves TL -->
+    <ellipse cx="90" cy="195" rx="22" ry="10" fill="#6aaa5a" opacity="0.8" transform="rotate(-40 90 195)"/>
+    <ellipse cx="115" cy="165" rx="20" ry="9" fill="#8ab87a" opacity="0.75" transform="rotate(-25 115 165)"/>
+    <ellipse cx="145" cy="140" rx="18" ry="8" fill="#6aaa5a" opacity="0.8" transform="rotate(-55 145 140)"/>
+    <ellipse cx="168" cy="115" rx="16" ry="7" fill="#8ab87a" opacity="0.7" transform="rotate(-70 168 115)"/>
+    <!-- Small berries TL -->
+    <circle cx="100" cy="180" r="5" fill="#c85f35" opacity="0.7"/>
+    <circle cx="155" cy="128" r="4" fill="#c85f35" opacity="0.65"/>
+
+    <!-- Top right botanical -->
+    <path d="M 944 200 Q 894 160 864 100" fill="none" stroke="#4a7a3a" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 904 170 Q 874 155 859 130" fill="none" stroke="#4a7a3a" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+    <ellipse cx="934" cy="195" rx="22" ry="10" fill="#6aaa5a" opacity="0.8" transform="rotate(40 934 195)"/>
+    <ellipse cx="909" cy="165" rx="20" ry="9" fill="#8ab87a" opacity="0.75" transform="rotate(25 909 165)"/>
+    <ellipse cx="879" cy="140" rx="18" ry="8" fill="#6aaa5a" opacity="0.8" transform="rotate(55 879 140)"/>
+    <ellipse cx="856" cy="115" rx="16" ry="7" fill="#8ab87a" opacity="0.7" transform="rotate(70 856 115)"/>
+    <circle cx="924" cy="180" r="5" fill="#c85f35" opacity="0.7"/>
+    <circle cx="869" cy="128" r="4" fill="#c85f35" opacity="0.65"/>
+
+    <!-- Bottom left botanical -->
+    <path d="M 80 824 Q 130 864 160 924" fill="none" stroke="#4a7a3a" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <ellipse cx="90" cy="829" rx="22" ry="10" fill="#6aaa5a" opacity="0.8" transform="rotate(40 90 829)"/>
+    <ellipse cx="118" cy="858" rx="20" ry="9" fill="#8ab87a" opacity="0.75" transform="rotate(25 118 858)"/>
+    <ellipse cx="148" cy="884" rx="18" ry="8" fill="#6aaa5a" opacity="0.8" transform="rotate(10 148 884)"/>
+    <circle cx="102" cy="843" r="4.5" fill="#c85f35" opacity="0.65"/>
+
+    <!-- Bottom right botanical -->
+    <path d="M 944 824 Q 894 864 864 924" fill="none" stroke="#4a7a3a" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <ellipse cx="934" cy="829" rx="22" ry="10" fill="#6aaa5a" opacity="0.8" transform="rotate(-40 934 829)"/>
+    <ellipse cx="906" cy="858" rx="20" ry="9" fill="#8ab87a" opacity="0.75" transform="rotate(-25 906 858)"/>
+    <ellipse cx="876" cy="884" rx="18" ry="8" fill="#6aaa5a" opacity="0.8" transform="rotate(-10 876 884)"/>
+    <circle cx="922" cy="843" r="4.5" fill="#c85f35" opacity="0.65"/>
+
+    <!-- Wreath - circular branch ring around bloom -->
+    <!-- Outer wreath branches -->
+    <circle cx="512" cy="430" r="200" fill="none" stroke="#4a7a3a" stroke-width="2.5" stroke-dasharray="12,8" opacity="0.35"/>
+
+    <!-- Wreath leaves around the circle (evenly spaced) -->
+    <g opacity="0.82">
+      <!-- Top -->
+      <ellipse cx="512" cy="228" rx="18" ry="9" fill="#6aaa5a" transform="rotate(0 512 228)"/>
+      <ellipse cx="512" cy="215" rx="14" ry="6" fill="#8ab87a" transform="rotate(0 512 215)"/>
+      <!-- Top-right -->
+      <ellipse cx="624" cy="256" rx="18" ry="9" fill="#6aaa5a" transform="rotate(60 624 256)"/>
+      <ellipse cx="636" cy="246" rx="14" ry="6" fill="#4a7a3a" transform="rotate(60 636 246)"/>
+      <!-- Right -->
+      <ellipse cx="710" cy="348" rx="18" ry="9" fill="#8ab87a" transform="rotate(90 710 348)"/>
+      <ellipse cx="722" cy="348" rx="14" ry="6" fill="#6aaa5a" transform="rotate(90 722 348)"/>
+      <!-- Right-bottom -->
+      <ellipse cx="710" cy="510" rx="18" ry="9" fill="#6aaa5a" transform="rotate(90 710 510)"/>
+      <ellipse cx="722" cy="510" rx="14" ry="6" fill="#8ab87a" transform="rotate(90 722 510)"/>
+      <!-- Bottom-right -->
+      <ellipse cx="624" cy="604" rx="18" ry="9" fill="#4a7a3a" transform="rotate(120 624 604)"/>
+      <ellipse cx="634" cy="614" rx="14" ry="6" fill="#6aaa5a" transform="rotate(120 634 614)"/>
+      <!-- Bottom -->
+      <ellipse cx="512" cy="632" rx="18" ry="9" fill="#6aaa5a" transform="rotate(0 512 632)"/>
+      <ellipse cx="512" cy="645" rx="14" ry="6" fill="#8ab87a" transform="rotate(0 512 645)"/>
+      <!-- Bottom-left -->
+      <ellipse cx="400" cy="604" rx="18" ry="9" fill="#4a7a3a" transform="rotate(-120 400 604)"/>
+      <ellipse cx="390" cy="614" rx="14" ry="6" fill="#6aaa5a" transform="rotate(-120 390 614)"/>
+      <!-- Left-bottom -->
+      <ellipse cx="314" cy="510" rx="18" ry="9" fill="#8ab87a" transform="rotate(-90 314 510)"/>
+      <ellipse cx="302" cy="510" rx="14" ry="6" fill="#6aaa5a" transform="rotate(-90 302 510)"/>
+      <!-- Left -->
+      <ellipse cx="314" cy="348" rx="18" ry="9" fill="#6aaa5a" transform="rotate(-90 314 348)"/>
+      <ellipse cx="302" cy="348" rx="14" ry="6" fill="#4a7a3a" transform="rotate(-90 302 348)"/>
+      <!-- Top-left -->
+      <ellipse cx="400" cy="256" rx="18" ry="9" fill="#8ab87a" transform="rotate(-60 400 256)"/>
+      <ellipse cx="388" cy="246" rx="14" ry="6" fill="#6aaa5a" transform="rotate(-60 388 246)"/>
+    </g>
+
+    <!-- Small flowers on wreath -->
+    <g opacity="0.9">
+      <circle cx="512" cy="226" r="7" fill="#f0a070"/>
+      <circle cx="512" cy="226" r="3.5" fill="#e87a50"/>
+      <circle cx="672" cy="298" r="6" fill="#f0b080"/>
+      <circle cx="672" cy="298" r="3" fill="#c86040"/>
+      <circle cx="352" cy="298" r="6" fill="#f0b080"/>
+      <circle cx="352" cy="298" r="3" fill="#c86040"/>
+      <circle cx="718" cy="540" r="5" fill="#f0a070"/>
+      <circle cx="718" cy="540" r="2.5" fill="#e87a50"/>
+      <circle cx="306" cy="540" r="5" fill="#f0a070"/>
+      <circle cx="306" cy="540" r="2.5" fill="#e87a50"/>
+      <circle cx="512" cy="640" r="7" fill="#f0b080"/>
+      <circle cx="512" cy="640" r="3.5" fill="#c86040"/>
+    </g>
+
+    <!-- Central bloom - large flower -->
+    <!-- Outer petals (8 petals) -->
+    <g opacity="0.92" filter="url(#softBlur)">
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#f0a878" transform="rotate(0 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#e89060" transform="rotate(45 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#f0a878" transform="rotate(90 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#e89060" transform="rotate(135 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#f0a878" transform="rotate(180 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#e89060" transform="rotate(225 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#f0a878" transform="rotate(270 512 430)"/>
+      <ellipse cx="512" cy="330" rx="42" ry="88" fill="#e89060" transform="rotate(315 512 430)"/>
+    </g>
+
+    <!-- Inner petals (8 smaller) -->
+    <g opacity="0.95">
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#f5b88a" transform="rotate(22.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#e8906a" transform="rotate(67.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#f5b88a" transform="rotate(112.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#e8906a" transform="rotate(157.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#f5b88a" transform="rotate(202.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#e8906a" transform="rotate(247.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#f5b88a" transform="rotate(292.5 512 430)"/>
+      <ellipse cx="512" cy="362" rx="28" ry="65" fill="#e8906a" transform="rotate(337.5 512 430)"/>
+    </g>
+
+    <!-- Flower center -->
+    <circle cx="512" cy="430" r="72" fill="url(#centerBloom)" filter="url(#gentleGlow)"/>
+    <circle cx="512" cy="430" r="58" fill="#d06838"/>
+    <circle cx="512" cy="430" r="42" fill="#b85025"/>
+    <!-- Stamens dots -->
+    <g fill="#f5c870" opacity="0.9">
+      <circle cx="512" cy="395" r="5"/>
+      <circle cx="538" cy="402" r="4.5"/>
+      <circle cx="552" cy="424" r="5"/>
+      <circle cx="545" cy="450" r="4.5"/>
+      <circle cx="524" cy="465" r="5"/>
+      <circle cx="500" cy="465" r="4.5"/>
+      <circle cx="479" cy="450" r="5"/>
+      <circle cx="472" cy="424" r="4.5"/>
+      <circle cx="486" cy="402" r="5"/>
+    </g>
+    <!-- Center highlight -->
+    <circle cx="498" cy="418" r="12" fill="#e87a50" opacity="0.4"/>
+
+    <!-- Ornate divider -->
+    <g stroke="#a06830" stroke-width="1.8" fill="none" opacity="0.7">
+      <line x1="185" y1="688" x2="345" y2="688"/>
+      <line x1="679" y1="688" x2="839" y2="688"/>
+      <path d="M 345 688 Q 380 672 415 688"/>
+      <path d="M 609 688 Q 644 672 679 688"/>
+      <path d="M 415 688 L 512 688"/>
+      <path d="M 512 688 L 609 688"/>
+      <circle cx="512" cy="681" r="9" fill="#e87a50" stroke="#a06830" stroke-width="1.5"/>
+    </g>
+
+    <!-- Title: "ENDLESS" -->
+    <text x="512" y="762"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="74"
+      font-weight="400"
+      fill="#7a4018"
+      text-anchor="middle"
+      letter-spacing="14">ENDLESS</text>
+
+    <!-- "Beloved" italic -->
+    <text x="512" y="828"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="50"
+      font-style="italic"
+      font-weight="400"
+      fill="#a05828"
+      text-anchor="middle"
+      letter-spacing="6"
+      opacity="0.95">Beloved</text>
+
+    <!-- "HEAL" subtitle tag -->
+    <rect x="388" y="854" width="248" height="50" rx="25" fill="#c85f35" opacity="0.12"/>
+    <rect x="388" y="854" width="248" height="50" rx="25" fill="none" stroke="#c85f35" stroke-width="1.5" opacity="0.6"/>
+    <text x="512" y="886"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="28"
+      font-weight="400"
+      fill="#8a3a10"
+      text-anchor="middle"
+      letter-spacing="10">HEAL</text>
+
+    <!-- Bottom leaf sprigs -->
+    <path d="M 300 950 Q 400 900 512 920 Q 624 900 724 950" fill="none" stroke="#4a7a3a" stroke-width="2" opacity="0.5"/>
+    <ellipse cx="370" cy="930" rx="16" ry="7" fill="#6aaa5a" opacity="0.6" transform="rotate(-20 370 930)"/>
+    <ellipse cx="450" cy="912" rx="15" ry="6" fill="#8ab87a" opacity="0.6" transform="rotate(-10 450 912)"/>
+    <ellipse cx="574" cy="912" rx="15" ry="6" fill="#8ab87a" opacity="0.6" transform="rotate(10 574 912)"/>
+    <ellipse cx="654" cy="930" rx="16" ry="7" fill="#6aaa5a" opacity="0.6" transform="rotate(20 654 930)"/>
+    <circle cx="512" cy="920" r="6" fill="#e87a50" opacity="0.7"/>
+
+    <!-- Scattered small pollen dots for texture -->
+    <g fill="#c89050" opacity="0.4">
+      <circle cx="180" cy="420" r="3"/>
+      <circle cx="840" cy="400" r="2.5"/>
+      <circle cx="200" cy="600" r="2"/>
+      <circle cx="820" cy="580" r="3"/>
+      <circle cx="250" cy="750" r="2.5"/>
+      <circle cx="780" cy="740" r="2"/>
+    </g>
+  </g>
+</svg>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace EndlessBeloved.Therapeutic
 {
@@ -20,15 +21,15 @@ namespace EndlessBeloved.Therapeutic
         [SerializeField] private GameObject skillEntryPrefab;
 
         [Header("Detail View")]
-        [SerializeField] private Text skillNameText;
-        [SerializeField] private Text skillTypeText;
-        [SerializeField] private Text storyDescText;
-        [SerializeField] private Text realLifeDescText;
-        [SerializeField] private Text quickTipText;
+        [SerializeField] private TMP_Text skillNameText;
+        [SerializeField] private TMP_Text skillTypeText;
+        [SerializeField] private TMP_Text storyDescText;
+        [SerializeField] private TMP_Text realLifeDescText;
+        [SerializeField] private TMP_Text quickTipText;
         [SerializeField] private Image skillIcon;
 
         [Header("Stats")]
-        [SerializeField] private Text progressText;
+        [SerializeField] private TMP_Text progressText;
         [SerializeField] private Slider progressBar;
 
         [Header("Filter")]
@@ -94,13 +95,13 @@ namespace EndlessBeloved.Therapeutic
                 spawnedEntries.Add(go);
 
                 // Entry display
-                var nameLabel = go.transform.Find("SkillName")?.GetComponent<Text>();
+                var nameLabel = go.transform.Find("SkillName")?.GetComponent<TMP_Text>();
                 if (nameLabel != null) nameLabel.text = skill.skillName;
 
-                var typeLabel = go.transform.Find("SkillType")?.GetComponent<Text>();
+                var typeLabel = go.transform.Find("SkillType")?.GetComponent<TMP_Text>();
                 if (typeLabel != null) typeLabel.text = skill.type.ToString();
 
-                var tipLabel = go.transform.Find("QuickTip")?.GetComponent<Text>();
+                var tipLabel = go.transform.Find("QuickTip")?.GetComponent<TMP_Text>();
                 if (tipLabel != null) tipLabel.text = skill.quickTip;
 
                 var icon = go.transform.Find("Icon")?.GetComponent<Image>();

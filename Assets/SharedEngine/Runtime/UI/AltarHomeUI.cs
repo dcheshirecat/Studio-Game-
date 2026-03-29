@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -14,9 +15,9 @@ namespace EndlessBeloved.UI
         private Button spellsButton;
         private Button journalButton;
         private Button saveButton;
-        private Text playerNameText;
-        private Text chapterText;
-        private Text cycleText;
+        private TMP_Text playerNameText;
+        private TMP_Text chapterText;
+        private TMP_Text cycleText;
 
         private void Start()
         {

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29d2442622ce7d4ea932c6ff325a72d, type: 3}
+  m_Name: Oracle_Dark
+  m_EditorClassIdentifier: 
+  characterId: oracle
+  archetype: The Oracle
+  tagline: Foresight & fate
+  feminineName: Aria
+  masculineName: Arion
+  nonbinaryName: Ari
+  defaultPortrait: {fileID: 0}
+  portraits: []
+  isStarter: true
+  unlockCondition: 
+  chapterCount: 8
+  endingIds:
+  - oracle_ending_light
+  - oracle_ending_dark
+  - oracle_ending_beloved
+  associatedCard: high_priestess
+  shortBio: "Keeper of forbidden knowledge, the Oracle sees all paths\u2014but never their own."
+  backstory: "Once a mortal seer who looked too deep into the cards. Now bound to the tower, trading visions for the price of memory."
+  personalityTraits:
+  - Mysterious
+  - Guarded
+  - Knowing
+  - Weary
+  commonPhrases:
+  - "The cards do not lie."
+  - "Every path has a price."
+  speechStyle: Formal, poetic, measured
+  romanceThreshold: 61
+  belovedThreshold: 81

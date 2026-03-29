@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#1a0a2e"/>
+      <stop offset="60%" stop-color="#0d0618"/>
+      <stop offset="100%" stop-color="#050209"/>
+    </radialGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c8a96e" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#c8a96e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonFace" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0dba0"/>
+      <stop offset="70%" stop-color="#c8a96e"/>
+      <stop offset="100%" stop-color="#9a7a3a"/>
+    </radialGradient>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b1a3a"/>
+      <stop offset="50%" stop-color="#5c0e26"/>
+      <stop offset="100%" stop-color="#2a0510"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="goldGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="roundedSquare">
+      <rect width="1024" height="1024" rx="180" ry="180"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="180" fill="url(#bg)"/>
+  <clipPath id="clip"><rect width="1024" height="1024" rx="180"/></clipPath>
+  <g clip-path="url(#clip)">
+
+    <!-- Subtle noise texture via fine dots -->
+    <circle cx="200" cy="150" r="1.2" fill="#c8a96e" opacity="0.5"/>
+    <circle cx="380" cy="80" r="0.8" fill="#c8a96e" opacity="0.6"/>
+    <circle cx="650" cy="120" r="1" fill="#c8a96e" opacity="0.4"/>
+    <circle cx="820" cy="200" r="1.4" fill="#ffffff" opacity="0.4"/>
+    <circle cx="120" cy="350" r="0.9" fill="#ffffff" opacity="0.3"/>
+    <circle cx="900" cy="400" r="1.1" fill="#c8a96e" opacity="0.5"/>
+    <circle cx="760" cy="900" r="1.2" fill="#c8a96e" opacity="0.4"/>
+    <circle cx="300" cy="870" r="0.8" fill="#ffffff" opacity="0.3"/>
+    <circle cx="500" cy="950" r="1" fill="#c8a96e" opacity="0.3"/>
+    <circle cx="140" cy="700" r="1.3" fill="#ffffff" opacity="0.25"/>
+    <circle cx="880" cy="750" r="0.9" fill="#c8a96e" opacity="0.4"/>
+    <circle cx="450" cy="200" r="1" fill="#ffffff" opacity="0.35"/>
+    <circle cx="70" cy="550" r="1.2" fill="#c8a96e" opacity="0.3"/>
+    <circle cx="960" cy="600" r="0.8" fill="#ffffff" opacity="0.3"/>
+
+    <!-- Moon glow halo -->
+    <circle cx="512" cy="420" r="280" fill="url(#moonGlow)" opacity="0.8"/>
+
+    <!-- Outer tarot border - gold filigree frame -->
+    <rect x="48" y="48" width="928" height="928" rx="140" fill="none" stroke="#c8a96e" stroke-width="3" opacity="0.9"/>
+    <rect x="60" y="60" width="904" height="904" rx="130" fill="none" stroke="#9a7a3a" stroke-width="1" opacity="0.7"/>
+    <rect x="72" y="72" width="880" height="880" rx="120" fill="none" stroke="#c8a96e" stroke-width="1.5" opacity="0.5"/>
+
+    <!-- Corner ornaments - top left -->
+    <g fill="none" stroke="#c8a96e" stroke-width="1.8" opacity="0.9" filter="url(#goldGlow)">
+      <!-- Top-left corner -->
+      <path d="M 88 160 L 88 88 L 160 88"/>
+      <path d="M 100 150 L 100 100 L 150 100"/>
+      <circle cx="110" cy="110" r="8" fill="#c8a96e" opacity="0.8"/>
+      <path d="M 104 110 L 88 110" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 110 104 L 110 88" stroke="#c8a96e" stroke-width="1"/>
+      <!-- Small diamond -->
+      <path d="M 110 96 L 116 104 L 110 112 L 104 104 Z" fill="#c8a96e" stroke="none" opacity="0.6"/>
+
+      <!-- Top-right corner -->
+      <path d="M 936 160 L 936 88 L 864 88"/>
+      <path d="M 924 150 L 924 100 L 874 100"/>
+      <circle cx="914" cy="110" r="8" fill="#c8a96e" opacity="0.8"/>
+      <path d="M 920 110 L 936 110" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 914 104 L 914 88" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 914 96 L 920 104 L 914 112 L 908 104 Z" fill="#c8a96e" stroke="none" opacity="0.6"/>
+
+      <!-- Bottom-left corner -->
+      <path d="M 88 864 L 88 936 L 160 936"/>
+      <path d="M 100 874 L 100 924 L 150 924"/>
+      <circle cx="110" cy="914" r="8" fill="#c8a96e" opacity="0.8"/>
+      <path d="M 104 914 L 88 914" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 110 920 L 110 936" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 110 906 L 116 914 L 110 922 L 104 914 Z" fill="#c8a96e" stroke="none" opacity="0.6"/>
+
+      <!-- Bottom-right corner -->
+      <path d="M 936 864 L 936 936 L 864 936"/>
+      <path d="M 924 874 L 924 924 L 874 924"/>
+      <circle cx="914" cy="914" r="8" fill="#c8a96e" opacity="0.8"/>
+      <path d="M 920 914 L 936 914" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 914 920 L 914 936" stroke="#c8a96e" stroke-width="1"/>
+      <path d="M 914 906 L 920 914 L 914 922 L 908 914 Z" fill="#c8a96e" stroke="none" opacity="0.6"/>
+    </g>
+
+    <!-- Mid border decorative diamonds -->
+    <g fill="#c8a96e" opacity="0.6">
+      <path d="M 512 54 L 520 62 L 512 70 L 504 62 Z"/>
+      <path d="M 512 954 L 520 962 L 512 970 L 504 962 Z"/>
+      <path d="M 54 512 L 62 520 L 54 528 L 46 520 Z"/>
+      <path d="M 970 512 L 978 520 L 970 528 L 962 520 Z"/>
+    </g>
+
+    <!-- Crescent moon - main shape -->
+    <circle cx="512" cy="420" r="190" fill="url(#moonFace)" filter="url(#softGlow)"/>
+    <!-- Shadow bite for crescent -->
+    <circle cx="580" cy="390" r="165" fill="#0d0618"/>
+    <!-- Inner crescent glow edge -->
+    <circle cx="512" cy="420" r="190" fill="none" stroke="#f0dba0" stroke-width="2" opacity="0.6"/>
+
+    <!-- Moon surface subtle texture lines -->
+    <path d="M 360 370 Q 390 360 420 375" fill="none" stroke="#9a7a3a" stroke-width="1.5" opacity="0.5"/>
+    <path d="M 345 410 Q 365 400 390 408" fill="none" stroke="#9a7a3a" stroke-width="1" opacity="0.4"/>
+    <path d="M 350 450 Q 380 438 410 448" fill="none" stroke="#9a7a3a" stroke-width="1.2" opacity="0.35"/>
+
+    <!-- Eye in the moon center -->
+    <!-- Eye white/base -->
+    <ellipse cx="390" cy="415" rx="52" ry="30" fill="#0d0618" opacity="0.95"/>
+    <!-- Iris -->
+    <circle cx="390" cy="415" r="22" fill="url(#eyeGlow)"/>
+    <!-- Pupil -->
+    <circle cx="390" cy="415" r="11" fill="#0a0005"/>
+    <!-- Eye highlight -->
+    <circle cx="382" cy="408" r="5" fill="#ff2255" opacity="0.8"/>
+    <circle cx="398" cy="422" r="2.5" fill="#ff2255" opacity="0.4"/>
+    <!-- Eye lashes top -->
+    <path d="M 345 400 Q 368 388 390 385 Q 412 388 435 400" fill="none" stroke="#c8a96e" stroke-width="2" opacity="0.9"/>
+    <!-- Eye lashes bottom -->
+    <path d="M 345 430 Q 368 442 390 445 Q 412 442 435 430" fill="none" stroke="#c8a96e" stroke-width="2" opacity="0.9"/>
+    <!-- Eyelash tips top -->
+    <line x1="352" y1="403" x2="348" y2="392" stroke="#c8a96e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="368" y1="393" x2="366" y2="381" stroke="#c8a96e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="390" y1="388" x2="390" y2="375" stroke="#c8a96e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="412" y1="393" x2="414" y2="381" stroke="#c8a96e" stroke-width="1.5" opacity="0.7"/>
+    <line x1="428" y1="403" x2="432" y2="392" stroke="#c8a96e" stroke-width="1.5" opacity="0.7"/>
+
+    <!-- Stars scattered -->
+    <g fill="#f0dba0" filter="url(#glow)">
+      <!-- Star function as 4-point shapes -->
+      <path d="M 200 260 L 203 268 L 211 268 L 205 273 L 207 281 L 200 276 L 193 281 L 195 273 L 189 268 L 197 268 Z" opacity="0.7" transform="scale(0.6) translate(137 167)"/>
+      <path d="M 780 200 L 783 208 L 791 208 L 785 213 L 787 221 L 780 216 L 773 221 L 775 213 L 769 208 L 777 208 Z" opacity="0.6" transform="scale(0.5) translate(770 205)"/>
+      <circle cx="180" cy="300" r="2.5" fill="#ffffff" opacity="0.8"/>
+      <circle cx="820" cy="280" r="2" fill="#ffffff" opacity="0.7"/>
+      <circle cx="160" cy="550" r="1.8" fill="#c8a96e" opacity="0.6"/>
+      <circle cx="850" cy="490" r="2.2" fill="#ffffff" opacity="0.65"/>
+      <circle cx="280" cy="200" r="1.5" fill="#c8a96e" opacity="0.7"/>
+      <circle cx="730" cy="160" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="620" cy="240" r="1.5" fill="#c8a96e" opacity="0.6"/>
+      <circle cx="400" cy="170" r="1.8" fill="#ffffff" opacity="0.55"/>
+    </g>
+
+    <!-- Ornate divider above title -->
+    <g stroke="#c8a96e" stroke-width="1.5" fill="none" opacity="0.85">
+      <line x1="200" y1="670" x2="380" y2="670"/>
+      <line x1="644" y1="670" x2="824" y2="670"/>
+      <path d="M 380 670 Q 420 650 460 670" />
+      <path d="M 564 670 Q 604 650 644 670"/>
+      <circle cx="512" cy="662" r="10" fill="#8b1a3a" stroke="#c8a96e" stroke-width="1.5"/>
+      <path d="M 460 670 L 510 670" stroke="#c8a96e"/>
+      <path d="M 514 670 L 564 670" stroke="#c8a96e"/>
+    </g>
+
+    <!-- Title: "ENDLESS" -->
+    <text x="512" y="740"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="78"
+      font-weight="400"
+      fill="#c8a96e"
+      text-anchor="middle"
+      letter-spacing="16"
+      filter="url(#goldGlow)">ENDLESS</text>
+
+    <!-- Subtitle: "Beloved" in italic -->
+    <text x="512" y="812"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="54"
+      font-style="italic"
+      font-weight="400"
+      fill="#f0dba0"
+      text-anchor="middle"
+      letter-spacing="8"
+      opacity="0.9">Beloved</text>
+
+    <!-- Bottom ornament -->
+    <g stroke="#c8a96e" stroke-width="1.2" fill="none" opacity="0.6">
+      <line x1="320" y1="855" x2="490" y2="855"/>
+      <line x1="534" y1="855" x2="704" y2="855"/>
+      <path d="M 490 855 L 512 845 L 534 855"/>
+      <circle cx="512" cy="860" r="4" fill="#c8a96e"/>
+    </g>
+
+    <!-- Crimson accent dots flanking title -->
+    <circle cx="190" cy="768" r="5" fill="#8b1a3a" opacity="0.8"/>
+    <circle cx="834" cy="768" r="5" fill="#8b1a3a" opacity="0.8"/>
+
+    <!-- Violet glow at bottom -->
+    <ellipse cx="512" cy="980" rx="300" ry="80" fill="#2a0545" opacity="0.5"/>
+  </g>
+</svg>

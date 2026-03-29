@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APKs
 
 on:
   push:
@@ -6,57 +6,160 @@ on:
   workflow_dispatch:
 
 env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  UNITY_VERSION: 2022.3.20f1
+  UNITY_VERSION: 6000.0.45f1
 
 jobs:
-  build-android:
-    name: Build APK
+  # ── Build Heal (Therapeutic) variant ─────────────────────────────
+  build-heal:
+    name: Build Heal APK
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
+
+    env:
+      DISPLAY: :0
 
     steps:
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
+          sudo apt-get clean
+          df -h /
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
 
-      - name: Cache Unity Library
-        uses: actions/cache@v3
+      - name: Cache Unity Library (Heal)
+        uses: actions/cache@v4
         with:
           path: Library
-          key: Library-Android-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-Android-Heal-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
+            Library-Android-Heal-
             Library-Android-
 
-      - name: Build Android APK
+      - name: Build Heal APK
         uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-          unityVersion: ${{ env.UNITY_VERSION }}
-          androidAppBundle: false
-          androidKeystoreName: user.keystore
-          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
-          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+          unityVersion: 6000.0.45f1
+          buildMethod: EndlessBeloved.Editor.BuildScript.BuildHeal
           buildName: EndlessBelovedHeal
-          buildMethod: ""
+          androidAppBundle: false
 
-      - name: Upload APK artifact
+      - name: Upload Heal APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: EndlessBeloved-APK
-          path: build/Android/*.apk
+          name: EndlessBeloved-Heal-APK
+          path: build/Android/**/*.apk
           retention-days: 14
 
-      - name: Upload to itch.io (optional)
-        if: github.ref == 'refs/heads/main' && secrets.BUTLER_API_KEY != ''
+  # ── Build Dark (Fantasy) variant ────────────────────────────────
+  build-dark:
+    name: Build Dark APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    env:
+      DISPLAY: :0
+
+    steps:
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Free disk space
         run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler push build/Android/*.apk ${{ secrets.ITCH_USER }}/${{ secrets.ITCH_GAME }}:android
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /opt/hostedtoolcache
+          sudo apt-get clean
+          df -h /
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Cache Unity Library (Dark)
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Android-Dark-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-Dark-
+            Library-Android-
+
+      - name: Build Dark APK
+        uses: game-ci/unity-builder@v4
         env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          unityVersion: 6000.0.45f1
+          buildMethod: EndlessBeloved.Editor.BuildScript.BuildDark
+          buildName: EndlessBelovedDark
+          androidAppBundle: false
+
+      - name: Upload Dark APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: EndlessBeloved-Dark-APK
+          path: build/Android/**/*.apk
+          retention-days: 14
+
+  # ── Create Release with direct APK downloads ────────────────────
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-heal, build-dark]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Heal APK
+        uses: actions/download-artifact@v4
+        with:
+          name: EndlessBeloved-Heal-APK
+          path: apks/heal
+
+      - name: Download Dark APK
+        uses: actions/download-artifact@v4
+        with:
+          name: EndlessBeloved-Dark-APK
+          path: apks/dark
+
+      - name: Prepare APK files
+        run: |
+          # Find and rename APK files for clean download names
+          find apks/heal -name "*.apk" -exec cp {} EndlessBeloved-Heal.apk \;
+          find apks/dark -name "*.apk" -exec cp {} EndlessBeloved-Dark.apk \;
+          ls -la *.apk
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }} (${{ github.ref_name }})
+          body: |
+            Automated build from branch `${{ github.ref_name }}` at commit ${{ github.sha }}.
+
+            **Download APK files directly:**
+            - **EndlessBeloved-Heal.apk** - Therapeutic visual novel variant (purple/gold icon)
+            - **EndlessBeloved-Dark.apk** - Dark fantasy variant (black/crimson icon)
+
+            Install: Download the APK, open it on your Android device, and allow installation from unknown sources when prompted.
+          files: |
+            EndlessBeloved-Heal.apk
+            EndlessBeloved-Dark.apk
+          prerelease: true
+          make_latest: true

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -19,7 +20,7 @@ namespace EndlessBeloved.UI
         private Button backFromSettingsButton;
         private Slider musicVolumeSlider;
         private Slider sfxVolumeSlider;
-        private Text[] slotLabels = new Text[3];
+        private TMP_Text[] slotLabels = new TMP_Text[3];
         private Button[] slotButtons = new Button[3];
 
         private string characterSetupScene = "CharacterSetup";

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Core;
 
 namespace EndlessBeloved.UI
@@ -65,12 +66,11 @@ namespace EndlessBeloved.UI
                 nameRect.anchorMax = new Vector2(0.7f, 0.9f);
                 nameRect.offsetMin = Vector2.zero;
                 nameRect.offsetMax = Vector2.zero;
-                var nameText = nameGo.AddComponent<Text>();
-                nameText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                var nameText = nameGo.AddComponent<TMP_Text>();
                 nameText.fontSize = 26;
                 nameText.color = unlocked ? Color.white : new Color(0.4f, 0.4f, 0.4f);
                 nameText.text = unlocked ? archetypeNames[i] : $"{archetypeNames[i]} [LOCKED]";
-                nameText.alignment = TextAnchor.MiddleLeft;
+                nameText.alignment = TextAlignmentOptions.Left;
 
                 // Tagline
                 var tagGo = new GameObject("TaglineText");
@@ -80,12 +80,11 @@ namespace EndlessBeloved.UI
                 tagRect.anchorMax = new Vector2(0.7f, 0.5f);
                 tagRect.offsetMin = Vector2.zero;
                 tagRect.offsetMax = Vector2.zero;
-                var tagText = tagGo.AddComponent<Text>();
-                tagText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                var tagText = tagGo.AddComponent<TMP_Text>();
                 tagText.fontSize = 18;
                 tagText.color = unlocked ? new Color(0.7f, 0.6f, 0.8f) : new Color(0.3f, 0.3f, 0.3f);
                 tagText.text = unlocked ? $"{taglines[i]}\nAffinity: {affinity}/100 ({tier})" : "???";
-                tagText.alignment = TextAnchor.MiddleLeft;
+                tagText.alignment = TextAlignmentOptions.Left;
 
                 // Button
                 var btn = entry.AddComponent<Button>();
@@ -120,7 +119,9 @@ namespace EndlessBeloved.UI
         {
             var gs = GameState.Instance;
             gs.ActiveRoute = characterId;
-            gs.CurrentSceneId = "oracle_ch1_01"; // Default to first story node
+            // Set route-specific starting node based on current chapter
+            int ch = gs.CurrentChapter > 0 ? gs.CurrentChapter : 1;
+            gs.CurrentSceneId = $"{characterId}_ch{ch}_01";
             SaveSystem.Instance?.SaveGame();
             SceneFlowManager.Instance.LoadScene(dialogueScene);
         }

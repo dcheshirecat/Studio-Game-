@@ -1,0 +1,21 @@
+{
+    "name": "EndlessBeloved.Editor",
+    "rootNamespace": "EndlessBeloved.Editor",
+    "references": [
+        "EndlessBeloved.SharedEngine",
+        "EndlessBeloved.Project",
+        "UnityEngine",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

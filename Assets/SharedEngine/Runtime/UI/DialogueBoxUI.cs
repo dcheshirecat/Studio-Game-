@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using EndlessBeloved.Dialogue;
 using EndlessBeloved.Core;
 
@@ -11,8 +12,8 @@ namespace EndlessBeloved.UI
     /// </summary>
     public class DialogueBoxUI : AutoWireUI
     {
-        private Text speakerNameText;
-        private Text dialogueText;
+        private TMP_Text speakerNameText;
+        private TMP_Text dialogueText;
         private Image portraitImage;
         private Image backgroundImage;
         private GameObject dialoguePanel;
@@ -60,15 +61,25 @@ namespace EndlessBeloved.UI
             var gs = GameState.Instance;
             string route = gs.ActiveRoute;
             if (string.IsNullOrEmpty(route)) route = "oracle";
+            int chapter = gs.CurrentChapter > 0 ? gs.CurrentChapter : 1;
 
-            // Try to load chapter JSON from Resources
-            string path = $"Story/{route}_ch{gs.CurrentChapter}";
-            var jsonAsset = Resources.Load<TextAsset>(path);
-
-            // Fallback: try from project content
-            if (jsonAsset == null)
+            // Try to load chapter JSON from Resources/Story/
+            string[] pathsToTry = new[]
             {
-                jsonAsset = Resources.Load<TextAsset>($"oracle_ch1");
+                $"Story/{route}_ch{chapter}",
+                $"Story/{route}_ch1",
+                $"Story/oracle_ch1"
+            };
+
+            TextAsset jsonAsset = null;
+            foreach (string path in pathsToTry)
+            {
+                jsonAsset = Resources.Load<TextAsset>(path);
+                if (jsonAsset != null)
+                {
+                    Debug.Log($"DialogueBoxUI: Loaded story from {path}");
+                    break;
+                }
             }
 
             if (jsonAsset != null)
@@ -77,13 +88,7 @@ namespace EndlessBeloved.UI
             }
             else
             {
-                // Last resort: load from StreamingAssets or direct path
-                string directPath = $"Assets/_Project/Content/Story/Oracle/oracle_ch1";
-                jsonAsset = Resources.Load<TextAsset>(directPath);
-                if (jsonAsset != null)
-                    runner.LoadChapter(jsonAsset, gs.CurrentSceneId);
-                else
-                    Debug.LogError($"Could not load chapter JSON for route={route} chapter={gs.CurrentChapter}");
+                Debug.LogError($"Could not load chapter JSON for route={route} chapter={chapter}. Checked: {string.Join(", ", pathsToTry)}");
             }
         }
 
@@ -180,14 +185,14 @@ namespace EndlessBeloved.UI
                     textRect.anchorMax = Vector2.one;
                     textRect.offsetMin = new Vector2(10, 5);
                     textRect.offsetMax = new Vector2(-10, -5);
-                    var t = textGo.AddComponent<Text>();
-                    t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                    t.alignment = TextAnchor.MiddleLeft;
+                    var t = textGo.AddComponent<TMP_Text>();
+                    t.font = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
+                    t.alignment = TextAlignmentOptions.Left;
                     t.color = Color.white;
-                    t.fontSize = 20;
+                    t.fontSize = 24;
                 }
 
-                var btnText = go.GetComponentInChildren<Text>();
+                var btnText = go.GetComponentInChildren<TMP_Text>();
                 if (btnText != null) btnText.text = choices[i].text;
 
                 var btn = go.GetComponent<Button>();
